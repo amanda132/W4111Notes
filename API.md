@@ -35,7 +35,7 @@
 Embedded SQL is a method of combining the computing power of a programming language and the database manipulation capabilities of SQL. Embedded SQL statements are SQL statements written inline with the program source code , of the host language. The embedded SQL statements are parsed by an embedded SQL preprocessor and replaced by host-language calls to a code library. The output from the preprocessor is then compiled by the host compiler. This way, SQL is compiled into program that interacts with DBMS directly.
 - Was previously a really popular approach; not any more.
 
-#### Example 2.1 ####
+### Example 2.1 ###
 Take the C (or C++, Fortran, Pascal, etc.) program that contains SQL, then compile it into parts that are just C code and parts that know how to talk with the DB.
 See below Oracle Pro*C code:
 ```cpp
@@ -54,14 +54,14 @@ See below Oracle Pro*C code:
     - Queries that return a single row of data are handled with a singleton SELECT statement; this statement specifies both the query and the host variables in which to return data. 
     - Queries that return multiple rows of data are handled with cursors. A cursor keeps track of the current row within a result set. The DECLARE CURSOR statement defines the query, the OPEN statement begins the query processing, the FETCH statement retrieves successive rows of data, and the CLOSE statement ends query processing.
 
-#### Example 2.2 Embedded SQL Flow ####
+### Example 2.2 Embedded SQL Flow ###
 <img src="https://github.com/Wangler/scribenotes/blob/master/embeddedsql.png" width="460">
 
 1. **Preprocessor**: Run the code (with embedded SQL) through the preprocessor which identifies all the `EXEC SQL` statements and translates them into DBMS library calls. 
 2. **Java Compiler**: Put the Java code into an executable that links to a DBMS library, to communicate with the database. 
 
 
-## Aside: Embedded SQL History
+### Aside: Embedded SQL History
 Embedded SQL hasn't taken off in popularity. Some of the issues it has faced are:
 - There could be runtime problems e.g. invalid SQL query
 - SQL standard has changed over time. There are dependencies between SQL and other programming languages. e.g. If there's a fancy new SQL feature, the compilers of all these other languages need to be augmented to support this new feature
@@ -69,7 +69,7 @@ Embedded SQL hasn't taken off in popularity. Some of the issues it has faced are
 - **_Making a library alone just sounds good enough_**
 
 
-## Libraries
+## 2.3 Libraries
 ### What does a library need to do?
 - **_At minimum_**: write a function that takes in a query string and execute it
 - It needs to take care of the engine, connection, and query execution.
