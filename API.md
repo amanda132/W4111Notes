@@ -54,7 +54,7 @@ See below Oracle Pro*C code:
     - Queries that return a single row of data are handled with a singleton SELECT statement; this statement specifies both the query and the host variables in which to return data. 
     - Queries that return multiple rows of data are handled with cursors. A cursor keeps track of the current row within a result set. The DECLARE CURSOR statement defines the query, the OPEN statement begins the query processing, the FETCH statement retrieves successive rows of data, and the CLOSE statement ends query processing.
 
-### Embedded SQL Flow ###
+#### Example 2.2 Embedded SQL Flow ####
 <img src="https://github.com/Wangler/scribenotes/blob/master/embeddedsql.png" width="460">
 
 1. **Preprocessor**: Run the code (with embedded SQL) through the preprocessor which identifies all the `EXEC SQL` statements and translates them into DBMS library calls. 
