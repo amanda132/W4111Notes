@@ -32,7 +32,7 @@
     - Objects can save themselves to the database
 
 ## 2.2 Embedded SQL
-- **Embedded SQL**: the usage of SQL commands within a host program
+- **Embedded SQL**: Extend host language (python) with SQL syntax.
 - Was previously a really popular approach; not any more.
 - e.g. Take the C (or C++, Fortran, Pascal, etc.) program that contains SQL, then compile it into parts that are just C code and parts that know how to talk with the DB.
 See below Oracle Pro*C code:
