@@ -1,14 +1,24 @@
+# 1. Introduction
+
 ## Lecture goals
 
-- You cant actually create an application with SQL
+- You can't actually create an application with SQL
 - How do you actually access a database without SQL injections?
 - How does the application talk to the database and do things?
 
-Recall that SQL != programming language!
+## SQL != programming language!
+**Not a general purpose programming language**
+- Tailored for data access/manipulation
+- Easy to optimize and parallelize 
+- Can’t perform “business logic”
 
-## Many Database API Options
-Couple of different ways to solve this problem:
+**Options**
+- Extend SQL, make it Turing Complete
+- Extend existing languages to understand SQL natively
+- Provide an API between programming languages and DBMSes.
 
+# 2. API
+## 2.1 Many Database API Options
 1. _Embedded SQL_
     - Design a programming language that understands SQL natively
     - **Embedded**: just as you can write a `x = y` statement in an application language, you can write `x = [a SQL query statement]` 
@@ -21,7 +31,7 @@ Couple of different ways to solve this problem:
     - Don't have to interface directly with the database at all
     - Objects can save themselves to the database
 
-## Embedded SQL
+## 2.2 Embedded SQL
 - **Embedded SQL**: the usage of SQL commands within a host program
 - Was previously a really popular approach; not any more.
 - e.g. Take the C (or C++, Fortran, Pascal, etc.) program that contains SQL, then compile it into parts that are just C code and parts that know how to talk with the DB.
