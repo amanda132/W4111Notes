@@ -358,5 +358,8 @@ the app code, so all these objects know that theyre relations. so you can run `.
     - It has a built-in engine to execute the relational algebra statement.
     - All within the program, which has implemente a db engine, you can construct a SQL statement and execute it.
 
+
+## References ##
 [1]. https://en.wikipedia.org/wiki/Embedded_SQL
+
 [2]. https://docs.microsoft.com/en-us/sql/odbc/reference/embedded-sql?view=sql-server-2017
