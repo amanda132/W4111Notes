@@ -32,12 +32,11 @@
     - Objects can save themselves to the database
 
 ## 2.2 Embedded SQL
-- **Embedded SQL**: 
-- Extend host language (python) with SQL syntax.
-- Goes through a preprocessor.
-- Compiled into program that interacts with DBMS directly.
+Embedded SQL is a method of combining the computing power of a programming language and the database manipulation capabilities of SQL. Embedded SQL statements are SQL statements written inline with the program source code , of the host language. The embedded SQL statements are parsed by an embedded SQL preprocessor and replaced by host-language calls to a code library. The output from the preprocessor is then compiled by the host compiler. This way, SQL is compiled into program that interacts with DBMS directly.
 - Was previously a really popular approach; not any more.
-- e.g. Take the C (or C++, Fortran, Pascal, etc.) program that contains SQL, then compile it into parts that are just C code and parts that know how to talk with the DB.
+
+#### Example 2.1 ####
+Take the C (or C++, Fortran, Pascal, etc.) program that contains SQL, then compile it into parts that are just C code and parts that know how to talk with the DB.
 See below Oracle Pro*C code:
 ```cpp
     int a;
@@ -52,14 +51,15 @@ See below Oracle Pro*C code:
 - The `EXEC SQL` statement sets the salary into a variable `a`.
 - **_BUT_**, what if the `SELECT` query returns multiple rows for `salary` which we declared as an integer? 
     - `a` would have to be a list or a set. And anything that references `a` would instead have to loop through `a`.
+    - Queries that return a single row of data are handled with a singleton SELECT statement; this statement specifies both the query and the host variables in which to return data. 
+    - Queries that return multiple rows of data are handled with cursors. A cursor keeps track of the current row within a result set. The DECLARE CURSOR statement defines the query, the OPEN statement begins the query processing, the FETCH statement retrieves successive rows of data, and the CLOSE statement ends query processing.
 
-### Embedded SQL Flow Example
+### Embedded SQL Flow ###
 <img src="https://github.com/Wangler/scribenotes/blob/master/embeddedsql.png" width="460">
 
 1. **Preprocessor**: Run the code (with embedded SQL) through the preprocessor which identifies all the `EXEC SQL` statements and translates them into DBMS library calls. 
 2. **Java Compiler**: Put the Java code into an executable that links to a DBMS library, to communicate with the database. 
 
-**_BUT_**, if we're using the DBMS library anyways, why not just use only this core component?
 
 ## Aside: Embedded SQL History
 Embedded SQL hasn't taken off in popularity. Some of the issues it has faced are:
@@ -357,3 +357,6 @@ the app code, so all these objects know that theyre relations. so you can run `.
     - You have a relation and can apply relational algebra
     - It has a built-in engine to execute the relational algebra statement.
     - All within the program, which has implemente a db engine, you can construct a SQL statement and execute it.
+
+[1]. https://en.wikipedia.org/wiki/Embedded_SQL
+[2]. https://docs.microsoft.com/en-us/sql/odbc/reference/embedded-sql?view=sql-server-2017
