@@ -145,7 +145,7 @@ SQL standard defines mappings between SQL and several languages. Most libraries 
 
 
 #### By Object
-- Issue: in your programming language you want to be able to change an object's attribute, and have that update be reflected in the database
+- Issue: Programming languages usually have classes. In your programming language you want to be able to change an object's attribute, and have that update be reflected in the database
 e.g.
 
 <img src = https://github.com/Wangler/scribenotes/blob/master/objects.png width = 500>
@@ -181,12 +181,14 @@ e.g. **Calling cursor.next()**
     - `.keys()`: gives you the number of records to be returned in query
     - `.previous()`: works just like `.next()`
     - `.get(idx)`: call `.next()` enough times until you get given result specified by that index
+    - `.fetchone()`: retrieves the next row of a query result set and returns a single sequence, or None if no more rows are available.
 - Cursors can be set to be read-only
 - We usually need to open a cursor if the embedded statement is a SELECT query.
 
 #### By Functions
 - How do you insert a function defined in python into the SQL string for execution?
-- Solution: embed a language runtime into dbms. Convert it into a UDF.
+<img src = https://github.com/amanda132/W4111Notes/api_function.png>
+- Solution: would need to embed a language runtime into DBMS. Many DBMSes support runtimes e.g., python. Can register User Defined Functions (UDFs).
 
 
 #### By Constraints
