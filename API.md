@@ -136,16 +136,16 @@ connections for future use
 The way the db thinks about the world is not the same as how your programming language expresses and describes it
 e.g. object(programming) != Row (dbms)
 
-### By Type
-Default Mappings: most programming languages have same set of fundamental data types
-e.g. sql:
+#### By Type
+SQL standard defines mappings between SQL and several languages. Most libraries can deal with common types
+
 <img src=https://github.com/Wangler/scribenotes/blob/master/objecttypes.png width=300>
 
 - This mapping is straightforward because types are simple
 - What about complex objects? e.g. python dictionaries
 
 
-### By Object
+#### By Object
 - Issue: in your programming language you want to be able to change an object's attribute, and have that update be reflected in the database
 e.g.
 
@@ -155,7 +155,7 @@ e.g.
 - ORMs are designed to solve this (!) by turning the object <-> db translation into a library ([see next section on ORM](https://github.com/w4111/scribenotes/wiki/apis#object-relational-mappers-orms))
 
 
-### By Results
+#### By Results
 - Results can create a memory problem for your program depending on how they're stored
 - An impedance mismatch occurs because SQL operates on _set_ of records, whereas host languages do not cleanly support a set-of-records abstraction. 
 - We must provide a mechanism that allows us to retrieve rows one at a time from a relation.
@@ -185,12 +185,12 @@ e.g. **Calling cursor.next()**
 - Cursors can be set to be read-only
 - We usually need to open a cursor if the embedded statement is a SELECT query.
 
-### By Functions
+#### By Functions
 - How do you insert a function defined in python into the SQL string for execution?
 - Solution: embed a language runtime into dbms. Convert it into a UDF.
 
 
-### By Constraints
+#### By Constraints
 - Issue: Constraints are naturally expressed in dbms since there's only place where data is stored and represented. But in the program, it's scattered everywhere
 - Issue: Constraints are duplicated between the programming language and the dbms
 
@@ -224,7 +224,7 @@ e.g. **Applying a Check Constraint in JS vs DBMS**
 
 
 
-## Detour: SQL INJECTIONS
+## 2.3.3 Detour: SQL INJECTIONS
 - **SQL Injection**: "an injection attack wherein an attacker can execute malicious SQL statements (also commonly referred to as a malicious payload) that control a web application’s database server" ([source](http://www.acunetix.com/websitesecurity/sql-injection/))
 - A SQL injection can arise from inserting a string into your db that contains multiple sql statements separated by `;`
 
