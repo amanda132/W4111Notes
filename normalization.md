@@ -70,7 +70,7 @@ For example, a relation with attributes (ABCD) can be replaced with (AB,BCD) or 
 |       2       |  cheese |
 |       4       |swimming |
 
-This is a bad attempt because you loose information in the decomposition, making it a lossy decomposition. Additionally it uses the same amount of memory to store the data so there is no benefit to decomposing the table in this way. 
+This is a bad attempt because you lose information in the decomposition, making it a lossy decomposition. Additionally it uses the same amount of memory to store the data so there is no benefit to decomposing the table in this way. 
 
 Explanation: If we read 'person' relation only, we cannot understand the meaning of attribute 'cost' without join, since it's the hobby's cost. However, if we equi-join two relations on sid, it actually cannot recover the original relation. 
 Because we have two tuples with 'sid = 1', equi-join is ambiguous that for instance cost '$$' can be associated with 'cheese' or 'trucks'. The decomposition breaks the original association between hobby and cost, and thus loses information. We call such decomposition as a 'lossy decomposition'.
