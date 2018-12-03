@@ -187,7 +187,7 @@ e.g. **Calling cursor.next()**
 
 #### By Functions
 - How do you insert a function defined in python into the SQL string for execution?
-![](https://github.com/amanda132/W4111Notes/blob/master/api_function.png?raw=true)
+![width = "460"](https://github.com/amanda132/W4111Notes/blob/master/api_function.png?raw=true)
 - Solution: would need to embed a language runtime into DBMS. Many DBMSes support runtimes e.g., python. Can register User Defined Functions (UDFs).
 
 
