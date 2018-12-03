@@ -334,15 +334,15 @@ ORMs try to have one place to define constraints
 ```
 
 
-### 2.4.3 ORM Queries vs SQL Queries
-e.g. **Query in ORM Python vs SQL**
+#### Example 2.4.1 ORM Queries vs SQL Queries
 
-**In ORM Python**
+
+##### In ORM Python
 ``` python
     session.query(User).filter(User.name.in_( ['Edwardo', 'fakeuser']).all()
 ```
 
-**In SQL**
+##### In SQL
 ``` sql
     SELECT * FROM users
     WHERE name IN ('Edwardo', 'fakeuser')
