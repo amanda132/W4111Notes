@@ -270,12 +270,12 @@ Use for these query templates. Not standardized. Vary between languages and data
 - Postgres in Python: Use `%s`
 - Postgres in Go: Use `?`
 - SQLite in Python: Use `?`
-## Object-Relational Mappers (ORMS)
+## 2.4 Object-Relational Mappers (ORMS) (skipped in fall 2018)
 - Using an object directly in your program which represents the DBMS itself. Can change object directly while the object itself fully captures the structure of the DBMS object.
 - Uses its own type of query syntax in the application's programming language
 - A solution to object and constraint related relational impedance mismatches
 
-### 2.4 Solving Object-based Impedance Mismatch (skipped in fall 2018)
+### Solving Object-based Impedance Mismatch 
 e.g. **Defining Object in Python ORM vs SQL**
 - Here we create a Base database object called User
 - In the Python ORM, you are defining the DBMS schema and the object attributes at same time.
