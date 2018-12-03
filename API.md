@@ -275,7 +275,7 @@ Use for these query templates. Not standardized. Vary between languages and data
 - Uses its own type of query syntax in the application's programming language
 - A solution to object and constraint related relational impedance mismatches
 
-### Solving Object-based Impedance Mismatch
+### 2.4 Solving Object-based Impedance Mismatch (skipped in fall 2018)
 e.g. **Defining Object in Python ORM vs SQL**
 - Here we create a Base database object called User
 - In the Python ORM, you are defining the DBMS schema and the object attributes at same time.
@@ -356,7 +356,7 @@ e.g. **Query in ORM Python vs SQL**
 - **BUT** using ORM language instead of raw SQL protects you from SQL injections: you're not executing any SQL strings directly from your program.
 
 
-## ORM Relationship Challenges (skip in lecture 15)
+## ORM Relationship Challenges
 
 ## Modern Database APIs
 - Modern languages try to blur the lines between dbms query code and application code e.g. Linq, Scalding, SparkSQL
