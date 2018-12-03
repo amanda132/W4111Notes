@@ -79,7 +79,7 @@ Embedded SQL hasn't taken off in popularity. Some of the issues it has faced are
 <img src="https://github.com/Wangler/scribenotes/blob/master/libraryflow.png" width="460">
 
 
-### Engines
+#### Engines
 - Ideally you want a common interface to all database engines that hides all the syntactical differences between them. Abstraction for a database engine tries to hide DBMS language differences
 - e.g. `SQLAlchemy` is a popular library. See below example for establishing a database connection
     - You insert the path string to the db into the `create_engine()` function. 
@@ -95,7 +95,7 @@ Embedded SQL hasn't taken off in popularity. Some of the issues it has faced are
     // note: sqllite has no host name (sqlite:///)
 ```
 
-### Connections
+#### Connections
 Before running queries need to create a connection
 - Tells DBMS to allocate resources for the connection
 - Relatively expensive to set up, libraries often cache
@@ -109,7 +109,7 @@ connections for future use
 - Should run `.close()` on your connections. otherwise resources leak.
 
 
-### Query Execution
+#### Query Execution
 ``` python
     conn1.execute(“update table test set a = 1”) 
     conn1.execute(“update table test set s = ‘wu’”)
