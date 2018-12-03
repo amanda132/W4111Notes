@@ -120,6 +120,9 @@ connections for future use
 - Some issues:
     - Needs to do error handling
     - Want to be able to assign the result to a program variable.
+    - Type impedance
+    - How to pass data between DBMS and host language?
+    - Can we only pass data between DBMS and host language?
 - What should be the object type of what's returned in `.execute()` (`foo` in this e.g.)? 
     - You don't want `foo` to consist of 5TB of data in memory.
     - Lists? (not immutable)
