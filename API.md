@@ -275,7 +275,7 @@ Use for these query templates. Not standardized. Vary between languages and data
 - Uses its own type of query syntax in the application's programming language
 - A solution to object and constraint related relational impedance mismatches
 
-### Solving Object-based Impedance Mismatch 
+### 2.4.1 Solving Object-based Impedance Mismatch 
 e.g. **Defining Object in Python ORM vs SQL**
 - Here we create a Base database object called User
 - In the Python ORM, you are defining the DBMS schema and the object attributes at same time.
@@ -314,7 +314,7 @@ e.g. **Defining Object in Python ORM vs SQL**
 - Running `.save()` sends the update back into the dbms.
 - The return value of an ORM query is a list of objects.
 
-### Solving Constraint-based Impedance Mismatch
+### 2.4.2 Solving Constraint-based Impedance Mismatch
 ORMs try to have one place to define constraints
 
 **Python**:
@@ -334,7 +334,7 @@ ORMs try to have one place to define constraints
 ```
 
 
-### ORM Queries vs SQL Queries
+### 2.4.3 ORM Queries vs SQL Queries
 e.g. **Query in ORM Python vs SQL**
 
 **In ORM Python**
@@ -348,7 +348,7 @@ e.g. **Query in ORM Python vs SQL**
     WHERE name IN ('Edwardo', 'fakeuser')
 ```
 
-### Issues with ORM:
+### 2.4.4 Issues with ORM:
 - Inefficient queries
 - Tricky when you want to change your application
 - Queries are harder to write since you can't use raw SQL. Translating SQL -> ORM language is hard.
