@@ -80,7 +80,7 @@ Embedded SQL hasn't taken off in popularity. Some of the issues it has faced are
 
 
 ### Engines
-- Ideally you want a common interface to all database engines that hides all the syntactical differences between them
+- Ideally you want a common interface to all database engines that hides all the syntactical differences between them. Abstraction for a database engine tries to hide DBMS language differences
 - e.g. `SQLAlchemy` is a popular library. See below example for establishing a database connection
     - You insert the path string to the db into the `create_engine()` function. 
     - The path looks like: `protocol_name` `://` `location` `:` `port` `/` `database_name`
@@ -96,8 +96,11 @@ Embedded SQL hasn't taken off in popularity. Some of the issues it has faced are
 ```
 
 ### Connections
-- You establish an HTTP or TCP connection to a particular machine at that particular host and port. The engine then allocates the resources in the db to start running queries.
-- **Issue**: can be expensive to set up
+Before running queries need to create a connection
+- Tells DBMS to allocate resources for the connection
+- Relatively expensive to set up, libraries often cache
+connections for future use
+- Defines scope of a transaction (later)
 ``` python
     conn1 = db1.connect()
     conn2 = db2.connect()
