@@ -195,16 +195,16 @@ e.g. **Calling cursor.next()**
 - Issue: Constraints are naturally expressed in dbms since there's only place where data is stored and represented. But in the program, it's scattered everywhere
 - Issue: Constraints are duplicated between the programming language and the dbms
 
-e.g. **Applying a Check Constraint in JS vs DBMS**
+#### Example 2.3 Applying a Check Constraint in JS vs DBMS
 
-**JS**:
+##### JS #####:
 
 ``` js
     age = get_age_input();
     if(age>100 or age<18)
         show_error(“age should be 18 – 100”);
 ```
-**DBMS**:
+##### DBMS #####:
 
 ``` sql
     CREATE TABLE Users (
