@@ -192,19 +192,19 @@ e.g. **Calling cursor.next()**
 
 
 #### By Constraints
-- Issue: Constraints are naturally expressed in dbms since there's only place where data is stored and represented. But in the program, it's scattered everywhere
+DB-style constraints are often as conditionals or exceptions.Constraints are naturally expressed in dbms since there's only place where data is stored and represented. But in the program, it's scattered everywhere. 
 - Issue: Constraints are duplicated between the programming language and the dbms
 
 #### Example 2.3 Applying a Check Constraint in JS vs DBMS
 
-##### JS #####:
+##### JS :
 
 ``` js
     age = get_age_input();
     if(age>100 or age<18)
         show_error(“age should be 18 – 100”);
 ```
-##### DBMS #####:
+##### DBMS:
 
 ``` sql
     CREATE TABLE Users (
@@ -216,9 +216,20 @@ e.g. **Calling cursor.next()**
 
 - This JS error is purely for notifying - not for validating. The purpose is not to correct the data. 
 - It won't guarantee that the constraint is upheld -- only doing it via DBMS will ensure that.
-- ORM will have one place to define constraints ([see next section on ORM](https://github.com/w4111/scribenotes/wiki/apis#object-relational-mappers-orms)) by translating the code into a check constraint in DBMS.
+- Some ORMs try to have one place to define constraints
+ ([see next section on ORM](https://github.com/w4111/scribenotes/wiki/apis#object-relational-mappers-orms)) by translating the code into a check constraint in DBMS.
+```
+class Person(models.Model):
+first_name = models.CharField(max_length=30)
+last_name = models.CharField(max_length=30, null=True)
 
-#### Heavyweights in terms of libraries: 
+CREATE TABLE myapp_person (
+"id" serial NOT NULL PRIMARY KEY, "first_name" varchar(30) NOT NULL, "last_name" varchar(30)
+);
+```
+
+#### Some Useful Names: 
+DBMS vendors provide libraries for most libraries. Two heavyweights in enterprise world
 - ODBC: Standard for Microsoft
 - JDBC: Standard for Java. 2 different library implementations: java and javax
 - The semantics and functions exposed are different
