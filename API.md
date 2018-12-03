@@ -356,9 +356,8 @@ ORMs try to have one place to define constraints
 - **BUT** using ORM language instead of raw SQL protects you from SQL injections: you're not executing any SQL strings directly from your program.
 
 
-## ORM Relationship Challenges
 
-## Modern Database APIs
+# 3. Modern Database APIs
 - Modern languages try to blur the lines between dbms query code and application code e.g. Linq, Scalding, SparkSQL
 - e.g. Using Spark engine, written in Scala
 ``` scala
