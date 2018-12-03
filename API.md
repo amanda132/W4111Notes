@@ -133,8 +133,7 @@ connections for future use
 
 ### 2.3.2 Relational Impedance Mismatches 
 
-The way the db thinks about the world is not the same as how your programming language expresses and describes it
-e.g. object(programming) != Row (dbms)
+An relational impedance mismatch refers to a range of problems representing data from relational databases in programming languages. 
 
 #### By Type
 SQL standard defines mappings between SQL and several languages. Most libraries can deal with common types
