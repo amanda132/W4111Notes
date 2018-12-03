@@ -71,15 +71,13 @@ Embedded SQL hasn't taken off in popularity. Some of the issues it has faced are
 
 ## 2.3 Libraries
 ### What does a library need to do?
-- **_At minimum_**: write a function that takes in a query string and execute it
-- It needs to take care of the engine, connection, and query execution.
-- It still requires making a connection to the DBMS
-- The library serves as an intermediary between your program and all the databases you want to talk to
-- Given that there are so many different DBMS engines (i.e. Postgres, MySQL, Microsoft), ideally you'd be able to connect to them all with the same library
-- e.g.
+- Single interface to possibly multiple DBMS engines
+- Connect to a database
+- Manage transactions (later)
+- Map objects between host language and DBMS
+- Manage query results
 <img src="https://github.com/Wangler/scribenotes/blob/master/libraryflow.png" width="460">
-- In a real life company application, you need to connect to multiple different databases (e.g. Ads, Users, Billing).
-- Using a library allows for a common interface to all databases: 
+
 
 ### Engines
 - Ideally you want a common interface to all database engines that hides all the syntactical differences between them
