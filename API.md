@@ -131,7 +131,7 @@ connections for future use
     - Answer is `cursor` (more on that later)
 
 
-### 2.3.2Relational Impedance Mismatches 
+### 2.3.2 Relational Impedance Mismatches 
 
 The way the db thinks about the world is not the same as how your programming language expresses and describes it
 e.g. object(programming) != Row (dbms)
