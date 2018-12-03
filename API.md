@@ -130,40 +130,6 @@ connections for future use
     - Sets? (expensive to represent because of duplicate removal)
     - Answer is `cursor` (more on that later)
 
-## Detour: SQL INJECTIONS
-- **SQL Injection**: "an injection attack wherein an attacker can execute malicious SQL statements (also commonly referred to as a malicious payload) that control a web application’s database server" ([source](http://www.acunetix.com/websitesecurity/sql-injection/))
-- A SQL injection can arise from inserting a string into your db that contains multiple sql statements separated by `;`
-
-**If we insert the variable `name` defined as below:**
-``` python
-    name = " '); DELETE FROM bad_table; -- " 
-
-    conn1.execute (“““
-    INSERT INTO bad_table(name) 
-    VALUES('{name}')”””.format(name=name))
-```
-
-**Query is:**
-``` sql
-    INSERT INTO bad_table(name) VALUES(''); DELETE FROM bad_table; -- ');
-```
-
-- The bad string adds a semicolon which finishes the insert statement without inserting anything. It then adds `--` which comments out the SQL code that comes after it.
-- Must have some function which _sanitizes_ the input string to prevent certain types of sql text from existing
-- Most libraries have a parameter in its `execute()` function that allows you to pass in a tuple of query arguments so that it can properly escape input values, thereby sanitizing everything **before** it hits the db.
-``` python
-    args = ('Dr Seuss', '40') 
-    conn1.execute(
-        “INSERT INTO users(name, age) VALUES(%s, %s)”, args)
-``` 
-- The above uses placeholders, into which variables are passed in
-- **NEVER CONSTRUCT RAW SQL STRINGS**. You must always pass variables into template instead.
-
-### Placeholders
-Use for these query templates. Not standardized. Vary between languages and databases.
-- Postgres in Python: Use `%s`
-- Postgres in Go: Use `?`
-- SQLite in Python: Use `?`
 
 ## Relational Impedance Mismatches
 The way the db thinks about the world is not the same as how your programming language expresses and describes it
@@ -255,6 +221,42 @@ e.g. **Applying a Check Constraint in JS vs DBMS**
 - JDBC: Standard for Java. 2 different library implementations: java and javax
 - The semantics and functions exposed are different
 
+
+
+## Detour: SQL INJECTIONS
+- **SQL Injection**: "an injection attack wherein an attacker can execute malicious SQL statements (also commonly referred to as a malicious payload) that control a web application’s database server" ([source](http://www.acunetix.com/websitesecurity/sql-injection/))
+- A SQL injection can arise from inserting a string into your db that contains multiple sql statements separated by `;`
+
+**If we insert the variable `name` defined as below:**
+``` python
+    name = " '); DELETE FROM bad_table; -- " 
+
+    conn1.execute (“““
+    INSERT INTO bad_table(name) 
+    VALUES('{name}')”””.format(name=name))
+```
+
+**Query is:**
+``` sql
+    INSERT INTO bad_table(name) VALUES(''); DELETE FROM bad_table; -- ');
+```
+
+- The bad string adds a semicolon which finishes the insert statement without inserting anything. It then adds `--` which comments out the SQL code that comes after it.
+- Must have some function which _sanitizes_ the input string to prevent certain types of sql text from existing
+- Most libraries have a parameter in its `execute()` function that allows you to pass in a tuple of query arguments so that it can properly escape input values, thereby sanitizing everything **before** it hits the db.
+``` python
+    args = ('Dr Seuss', '40') 
+    conn1.execute(
+        “INSERT INTO users(name, age) VALUES(%s, %s)”, args)
+``` 
+- The above uses placeholders, into which variables are passed in
+- **NEVER CONSTRUCT RAW SQL STRINGS**. You must always pass variables into template instead.
+
+### Placeholders
+Use for these query templates. Not standardized. Vary between languages and databases.
+- Postgres in Python: Use `%s`
+- Postgres in Go: Use `?`
+- SQLite in Python: Use `?`
 ## Object-Relational Mappers (ORMS)
 - Using an object directly in your program which represents the DBMS itself. Can change object directly while the object itself fully captures the structure of the DBMS object.
 - Uses its own type of query syntax in the application's programming language
