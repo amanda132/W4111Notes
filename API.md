@@ -70,7 +70,7 @@ Embedded SQL hasn't taken off in popularity. Some of the issues it has faced are
 
 
 ## 2.3 Libraries
-### What does a library need to do?
+### What does a library need to do? ###
 - Single interface to possibly multiple DBMS engines
 - Connect to a database
 - Manage transactions (later)
@@ -131,7 +131,7 @@ connections for future use
     - Answer is `cursor` (more on that later)
 
 
-## Relational Impedance Mismatches
+### Relational Impedance Mismatches ###
 The way the db thinks about the world is not the same as how your programming language expresses and describes it
 e.g. object(programming) != Row (dbms)
 
