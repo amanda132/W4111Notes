@@ -1,22 +1,49 @@
 
-# Lec 18 Physical Design
-## Query Performance I: Disk Storage and Indexing
+# 1. Introduction
+### Query Performance I: Disk Storage and Indexing
 * Why do we care about hardware?
 * What properties that really matter for design the rest of the system?
 
-##Work from bottom up
-### Why Disk is important? 
-1. Disk is the cheapest per Gigabyte Storage mechanism in the market
-2. The process of analyzing and optimizing disk is the same process you might go through for optimizing any others
-3. It allows us to retrieve any page at a (more or less) fixed cost per page. However, if we read several pages in the order that they are stored physically, the cost can be much less than the cost of reading the same pages in a random order.
-
+### Work from bottom up
 ![](https://github.com/pyw2102/w4111ScribedNotes/blob/master/Physical-Design/disk.png?raw=true)
-- There is a total of 5 layers. Each of which is considered a separate component in the database management system software.
+- There is a total of 5 layers. Each of which is considered a separate component in the database management system software, and it provides a simple abstraction to layers above it, and makes assumptions about layers below it. 
 - Query Optimization and Execution: This is the layer that processes the query we wrote. It's parse it, checks the syntax and verify the SQL query. For example, it checks whether the table to the in the from clause exist or not or any typos in the query. Then comes all the possible relational plans, which are different ways of ordering the relational algebra. The optimizer finds the best plan base on the time cost.
 - Relational Operators: This layer takes the query from the above layer and implement the necessary relational operator. This layer is also called the execution engine, because execute the query above.
 - Files and Access Methods: This layer organizes the tables, indexes as groups of pages in a "logical file". All the layers under this layer only works with pages because they are more easily manageable. There are many ways to organize pages; heap files are mention below.
 - Buffer Manager: This software layer that is responsible for bringing pages from disk to main memory as needed. (p232)  In addition, there is a limit on how many pages this manager contains. 
 - Disk space manager : The lowest layer of the DBMS software manage space on disk, where the data is stored. Disk space manager supports the concept of a page as a unit data, and provide commands to allocate or deallocate a page and read or write a page. Higher layers allocate, deallocate, read, and write pages through (routines provided by) this layer.(p231)
+
+#### Example 1.1
+When a SQL client enters:
+```
+db.execute(’’’
+SELECT a, b
+FROM S, T
+WHERE S.c = T.c’’’)
+```
+- **Query Parsing and Optimization**: turns the request into efficient query plan
+
+![](https://github.com/amanda132/W4111Notes/blob/master/Screen%20Shot%202018-12-04%20at%209.08.02%20AM.png?raw=true)
+
+- **Relational Operators**: each operator is a specific implementation
+
+![](https://github.com/amanda132/W4111Notes/blob/master/Screen%20Shot%202018-12-04%20at%209.10.45%20AM.png?raw=true)
+
+- **Files and Access Methods**: files and access Methods
+
+API:
+• Operators ask for records
+• Logical files help read and write bytes on pages
+
+- **Buffer Management**: files simply ask for pages.
+
+- **Disk Space Management**: storage performance properties dictate the design of layers above
+
+
+### Why Disk is important? 
+1. Disk is the cheapest per Gigabyte Storage mechanism in the market
+2. The process of analyzing and optimizing disk is the same process you might go through for optimizing any others
+3. It allows us to retrieve any page at a (more or less) fixed cost per page. However, if we read several pages in the order that they are stored physically, the cost can be much less than the cost of reading the same pages in a random order.
 
 
 ## $ Matters 
