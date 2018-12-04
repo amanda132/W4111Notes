@@ -72,7 +72,7 @@ You can spend some money on RAM for active data, Disk for main database, seconda
 ![](https://github.com/pyw2102/w4111ScribedNotes/blob/master/Physical-Design/jimgray.png?raw=true)
 
 # 2. Disk
-##  What is a disk? How a disk work?
+##  2. 1 What is a disk? How a disk work?
 - Think of the disk as a very fast DVD or record player. Stack a bunch of the round disks on top of each other. The tip of the head will know how to read and write whatever is underneath it. This is how DVD and record players work. Each of the rings correspond to a track and it stores data. Each track is split into segments called Sector. 
 
 ![](https://github.com/amanda132/W4111Notes/blob/master/Screen%20Shot%202018-12-04%20at%209.54.16%20AM.png?raw=true)
@@ -93,8 +93,6 @@ You can spend some money on RAM for active data, Disk for main database, seconda
 - Rotational delay: the data you want is not directly underneath the reader, so you need to wait until the disk rotates until you can actually read that thing.
 - The key thing here is to reduce seek and rotational delays: HW & SW approaches. 
 
-## Pre-fetching
-We want to optimize the amount of data we can sequentially access. Disk drive can do pre-fetching. If you are sequentially reading some data in a file that store sequentially on disk, then disk driver can just start reading ahead. E.g. doing data processing and pause it, next time you read the next data, it will already be there because it has already fetched it for you. 
 
 ## Graph of read cost for random vs. sequential access
 If you are doing random access (randomly placed in storage device), how many can you read per sec? 316 values/sec
@@ -103,12 +101,22 @@ Random access between memory and disk is pretty much on par.
 
 ![](https://github.com/pyw2102/w4111ScribedNotes/blob/master/Physical-Design/valuereadpersec.png?raw=true)
 
-## Pragmatics of Databases
-- Most databases are pretty small
-- All global daily weather since 1929:20GB
+## What’s Best? Depends on Application
+**Small databases:**
+- All global daily weather since 1929:20GB 
 - 2000 US Census: 200GB
-- 2009 english wikipedia: 14GB (you can fit this in your laptop!)
-- You don’t have to have Google infrastructure to do interesting things. 
+- 2009 english wikipedia: 14GB
+- Easily fits on an SSD or in RAM
+**Very Big database:**
+- Sensors easily generate TBs of data/day 
+- Boeing 787 generates 1⁄2 TB per flight 
+- Disk has best cost-capacity ratio
+- SSDs help reduce read variance
+
+## Strategies for Fast Data Access
+We have seen that there is a  difference between random and sequential access. Therefore, we want to optimize for sequential accesses.
+
+We want to optimize the amount of data we can sequentially access. Disk drive can do pre-fetching. If you are sequentially reading some data in a file that store sequentially on disk, then disk driver can just start reading ahead. E.g. doing data processing and pause it, next time you read the next data, it will already be there because it has already fetched it for you. 
 
 ## What is the API between data base system and disk?
 - API is centered around a page, a fixed size block of data. This is the unit we pass around. We want to amortize the cost of having to move that arm. 
@@ -121,7 +129,7 @@ Random access between memory and disk is pretty much on par.
 
 ![](https://github.com/pyw2102/w4111ScribedNotes/blob/master/Physical-Design/table.png?raw=true)
 
-## What is a page?
+## 2.2 What is a page?
 - Unit of transfer between storage and database
 - Typically fixed size
 - Small enough for one I/O to be fast
