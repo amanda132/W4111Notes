@@ -21,17 +21,16 @@ SELECT a, b
 FROM S, T
 WHERE S.c = T.c’’’)
 ```
-- **Query Parsing and Optimization**: Parse, check, and verify the SQL query; turns the request into efficient query plan (pic1)
-- **Relational Operators**: A query is represented as a relational data flow; each operator is a specific implementation (pic2)
-- **Files and Access Methods**: Organizes tables, indexes, records as groups of pages in a “logical file”; 
+- Query Parsing and Optimization: Parse, check, and verify the SQL query; turns the request into efficient query plan
+![](https://github.com/amanda132/W4111Notes/blob/master/Screen%20Shot%202018-12-04%20at%209.08.02%20AM.png?raw=true)
+- Relational Operators: A query is represented as a relational data flow; each operator is a specific implementation
+![](https://github.com/amanda132/W4111Notes/blob/master/Screen%20Shot%202018-12-04%20at%209.10.45%20AM.png?raw=true)
+- Files and Access Methods: Organizes tables, indexes, records as groups of pages in a “logical file”; 
 API:
 • Operators ask for records
 • Logical files help read and write bytes on pages
-- **Buffer Management**: Not all pages can fit into RAM, and buffer manager provides illusion that all pages are accessible; files simply ask for pages.
-- **Disk Space Management**: Physically read and write bytes on one or more storage devices (hard drives, SSDs, etc); storage performance properties dictate the design of layers above
-
-![](https://github.com/amanda132/W4111Notes/blob/master/Screen%20Shot%202018-12-04%20at%209.08.02%20AM.png?raw=true)
-![](https://github.com/amanda132/W4111Notes/blob/master/Screen%20Shot%202018-12-04%20at%209.10.45%20AM.png?raw=true)
+- Buffer Management: Not all pages can fit into RAM, and buffer manager provides illusion that all pages are accessible; files simply ask for pages.
+- Disk Space Management: Physically read and write bytes on one or more storage devices (hard drives, SSDs, etc); storage performance properties dictate the design of layers above
 
 
 
