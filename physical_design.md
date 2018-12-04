@@ -5,7 +5,7 @@
 * What properties that really matter for design the rest of the system?
 
 ### Work from bottom up
-![](https://github.com/pyw2102/w4111ScribedNotes/blob/master/Physical-Design/disk.png?raw=true)
+![](https://github.com/amanda132/W4111Notes/blob/master/Screen%20Shot%202018-12-04%20at%209.26.46%20AM.png?raw=true)
 - There is a total of 5 layers. Each of which is considered a separate component in the database management system software, and it provides a simple abstraction to layers above it, and makes assumptions about layers below it. 
 - Query Optimization and Execution: This is the layer that processes the query we wrote. It's parse it, checks the syntax and verify the SQL query. For example, it checks whether the table to the in the from clause exist or not or any typos in the query. Then comes all the possible relational plans, which are different ways of ordering the relational algebra. The optimizer finds the best plan base on the time cost.
 - Relational Operators: This layer takes the query from the above layer and implement the necessary relational operator. This layer is also called the execution engine, because execute the query above.
@@ -21,21 +21,18 @@ SELECT a, b
 FROM S, T
 WHERE S.c = T.c’’’)
 ```
-- **Query Parsing and Optimization**: turns the request into efficient query plan
-
-![](https://github.com/amanda132/W4111Notes/blob/master/Screen%20Shot%202018-12-04%20at%209.08.02%20AM.png?raw=true)
-
-- **Relational Operators**: each operator is a specific implementation
-
-![](https://github.com/amanda132/W4111Notes/blob/master/Screen%20Shot%202018-12-04%20at%209.10.45%20AM.png?raw=true)
-
-- **Files and Access Methods**: files and access Methods
-
+- **Query Parsing and Optimization**: Parse, check, and verify the SQL query; turns the request into efficient query plan (pic1)
+- **Relational Operators**: A query is represented as a relational data flow; each operator is a specific implementation (pic2)
+- **Files and Access Methods**: Organizes tables, indexes, records as groups of pages in a “logical file”; 
 API:
 • Operators ask for records
 • Logical files help read and write bytes on pages
-- **Buffer Management**: files simply ask for pages.
-- **Disk Space Management**: storage performance properties dictate the design of layers above
+- **Buffer Management**: Not all pages can fit into RAM, and buffer manager provides illusion that all pages are accessible; files simply ask for pages.
+- **Disk Space Management**: Physically read and write bytes on one or more storage devices (hard drives, SSDs, etc); storage performance properties dictate the design of layers above
+
+![](https://github.com/amanda132/W4111Notes/blob/master/Screen%20Shot%202018-12-04%20at%209.08.02%20AM.png?raw=true)
+![](https://github.com/amanda132/W4111Notes/blob/master/Screen%20Shot%202018-12-04%20at%209.10.45%20AM.png?raw=true)
+
 
 
 ### Why Disk is important? 
