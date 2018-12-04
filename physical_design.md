@@ -94,14 +94,14 @@ You can spend some money on RAM for active data, Disk for main database, seconda
 - The key thing here is to reduce seek and rotational delays: HW & SW approaches. 
 
 
-## Graph of read cost for random vs. sequential access
+### Random vs. sequential access
 If you are doing random access (randomly placed in storage device), how many can you read per sec? 316 values/sec
 If you look at memory, you will see that there is higher throughput. 
 Random access between memory and disk is pretty much on par. 
 
 ![](https://github.com/pyw2102/w4111ScribedNotes/blob/master/Physical-Design/valuereadpersec.png?raw=true)
 
-## What’s Best? Depends on Application
+### What’s Best? Depends on Application
 **Small databases:**
 - All global daily weather since 1929:20GB 
 - 2000 US Census: 200GB
@@ -114,14 +114,14 @@ Random access between memory and disk is pretty much on par.
 - Disk has best cost-capacity ratio
 - SSDs help reduce read variance
 
-## Strategies for Fast Data Access
+### Strategies for Fast Data Access
 We have seen that there is a  difference between random and sequential access. Therefore, we want to optimize for sequential accesses.
 
 - **Amortize** sequentially read & write big chunks of bytes 
 - **Cache** popular blocks
 - **Pre-fetch** what you will need later
 
-## What is the API between data base system and disk?
+### What is the API between data base system and disk?
 - API is centered around a page, a fixed size block of data. This is the unit we pass around. We want to amortize the cost of having to move that arm. 
 
 - If page you read from disk too small: dominated by moving arm around
