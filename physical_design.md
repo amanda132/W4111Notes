@@ -107,6 +107,7 @@ Random access between memory and disk is pretty much on par.
 - 2000 US Census: 200GB
 - 2009 english wikipedia: 14GB
 - Easily fits on an SSD or in RAM
+
 **Very Big database:**
 - Sensors easily generate TBs of data/day 
 - Boeing 787 generates 1⁄2 TB per flight 
@@ -116,7 +117,9 @@ Random access between memory and disk is pretty much on par.
 ## Strategies for Fast Data Access
 We have seen that there is a  difference between random and sequential access. Therefore, we want to optimize for sequential accesses.
 
-We want to optimize the amount of data we can sequentially access. Disk drive can do pre-fetching. If you are sequentially reading some data in a file that store sequentially on disk, then disk driver can just start reading ahead. E.g. doing data processing and pause it, next time you read the next data, it will already be there because it has already fetched it for you. 
+- **Amortize** sequentially read & write big chunks of bytes 
+- **Cache** popular blocks
+- **Pre-fetch** what you will need later
 
 ## What is the API between data base system and disk?
 - API is centered around a page, a fixed size block of data. This is the unit we pass around. We want to amortize the cost of having to move that arm. 
