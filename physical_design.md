@@ -75,7 +75,7 @@ You can spend some money on RAM for active data, Disk for main database, seconda
 ##  What is a disk? How a disk work?
 - Think of the disk as a very fast DVD or record player. Stack a bunch of the round disks on top of each other. The tip of the head will know how to read and write whatever is underneath it. This is how DVD and record players work. Each of the rings correspond to a track and it stores data. Each track is split into segments called Sector. 
 
-![](https://github.com/pyw2102/w4111ScribedNotes/blob/master/Physical-Design/diskcomponents.png?raw=true)
+![](https://github.com/amanda132/W4111Notes/blob/master/Screen%20Shot%202018-12-04%20at%209.54.16%20AM.png?raw=true)
 
 - This a representation of hard drive. The tip of Head know how to read and write what ever underneath it. Each of the ring is a track, which stores data. Each track is separated into several sector.
 
