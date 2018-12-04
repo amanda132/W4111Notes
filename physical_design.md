@@ -1,10 +1,9 @@
 
 # 1. Introduction
-### Query Performance I: Disk Storage and Indexing
 * Why do we care about hardware?
 * What properties that really matter for design the rest of the system?
 
-### Work from bottom up
+## 1.1 Work from bottom up
 ![](https://github.com/amanda132/W4111Notes/blob/master/Screen%20Shot%202018-12-04%20at%209.26.46%20AM.png?raw=true)
 - There is a total of 5 layers. Each of which is considered a separate component in the database management system software, and it provides a simple abstraction to layers above it, and makes assumptions about layers below it. 
 - Query Optimization and Execution: This is the layer that processes the query we wrote. It's parse it, checks the syntax and verify the SQL query. For example, it checks whether the table to the in the from clause exist or not or any typos in the query. Then comes all the possible relational plans, which are different ways of ordering the relational algebra. The optimizer finds the best plan base on the time cost.
@@ -34,14 +33,12 @@ API:
 
 
 
+## 1.2 Disk vs RAM
+Data is literally driven by money.
 ### Why Disk is important? 
 1. Disk is the cheapest per Gigabyte Storage mechanism in the market
 2. The process of analyzing and optimizing disk is the same process you might go through for optimizing any others
 3. It allows us to retrieve any page at a (more or less) fixed cost per page. However, if we read several pages in the order that they are stored physically, the cost can be much less than the cost of reading the same pages in a random order.
-
-
-## $ Matters 
- Data is literally driven by money.
 
 ### Why not store all in RAM?
 1. Cost too much:
@@ -49,7 +46,8 @@ High-end Databases today store Petabyte (1000TB) of data
 60% of the cost of operating a database is in supplying, managing and maintaining disks.
 2.  Main Memory not persistent; It is important if DB stops or crashes. 
 
-- Example: If you spend $ 1000 on hardware, you can get 64 - 96 GB for RAM, 400 - 1000 GB for SSD, 24000 for Disk. 
+#### Example 1.2
+If you spend $ 1000 on hardware, you can get 64 - 96 GB for RAM, 400 - 1000 GB for SSD, 24000 for Disk. 
 You can spend some money on RAM for active data, Disk for main database, secondary storage, and Tapes for archive.
 - What does this mean? 
  You can prioritize where your money goes to- ram, disk, etc.
