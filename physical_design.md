@@ -34,9 +34,7 @@ WHERE S.c = T.c’’’)
 API:
 • Operators ask for records
 • Logical files help read and write bytes on pages
-
 - **Buffer Management**: files simply ask for pages.
-
 - **Disk Space Management**: storage performance properties dictate the design of layers above
 
 
