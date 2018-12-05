@@ -314,17 +314,18 @@ Because we use only pointers, a page can contain many more pointers, but need to
  - We start at the node, and evaluate our condition against the conditions corresponding the three pointers. With the two index key values, 17 and 50, serving as dividers for the pointers. The first, second, and third pointers corresponds to the following conditions, respectively: values < 17, 17 < values < 50, values > 50. Because our condition falls within the range of the first condition, we follow the first pointer. We read from left to right, first evaluating the key 14, which does not equal 16. We proceed right to the next search key (we can do this because a Btree is sorted on its index keys), and find that the key search key, 16, does in fact match our condition. We return this tuple, and continue scanning right to check for any additional matches. Because leaf nodes in a Btree index are connected by previous/next pointers, we can proceed to the next leaf page without having to go through the index again. Reading the next page from left to right, we determine that the next next key, 17, does not satisfy our condition, and so we end our search.
 
 **Full B+ Tree with additional record pages**
-![](https://github.com/shy2116/project1/blob/master/B1.PNG?raw=true)
-- The INDEX page is full, so we cannot add more child pointers to point to the two leaf nodes on the left. An additional index page must be added.
+ <img src="https://github.com/shy2116/project1/blob/master/B1.PNG" width="400px" />
 
-![](https://github.com/shy2116/project1/blob/master/B2.PNG?raw=true)
+- The INDEX page is full, so we cannot add more child pointers to point to the two leaf nodes on the left. An additional index page must be added.
+ <img src="https://github.com/shy2116/project1/blob/master/B2.PNG" width="400px" />
+
 - We have added an additional index page to cover the two additional nodes; however, in doing so we also had to create an additional level and an additional page to point to the two index pages below it.
  - This is necessary, because we need a new root node to navigate the multiple index pages we now have.
  - The height of our index has increased by 1 to a value of 2.
 
 
 **Composite search tree (multiple search keys)**
-![](https://github.com/shy2116/project1/blob/master/Bage.PNG?raw=true)
+ <img src="https://github.com/shy2116/project1/blob/master/Bage.PNG" width="400px" />
 - A search tree sorts in order of search keys from left to right
 - Trade-off: Less entries in a given directory page, but you can answer queries based on two attributes.
 
@@ -344,12 +345,13 @@ We can’t use this index because there is no criteria on age. We cannot do any 
 **Height:** Length of the path from the root to the leaf node. If a “Secondary” Index Structure is used, the page storing the data is not part of the height.
 
 ### Some Numbers (8kb pages)
-![](https://github.com/shy2116/project1/blob/master/Some%20numbers.PNG?raw=true)
+ <img src="https://github.com/shy2116/project1/blob/master/Some%20numbers.PNG" width="400px" />
+
 - We can find the other data entries easily by using only the data in height 2 and height 3 data, therefore, we only store a little data in memory but visit a huge quantity of data easily.
 If we use 8kb pages to store integers and pointers, we can store roughly 500 entries/page. At fill factor of 66%, this is roughly 300 entries/page. We can see that the number of entries we can store ramp up exponentially with the height of the tree. A tree of height 2 filled to its limit (66% fill factor) of 27 million integer/pointer entries takes up ~2.4MB of space. Considering laptops today come standard with at least 4GB of memory, 2.4MB can be stored entirely in memory, meaning no disk access is necessary. This is even possible with a tree of height 3, requiring 750MB. 
 
 ### Hash Index
-![](https://github.com/shy2116/project1/blob/master/Hash%20Index.PNG?raw=true)
+ <img src="https://github.com/shy2116/project1/blob/master/Hash%20Index.PNG" width="400px" />
 
 - A hash index is a collection of buckets organized in an array. A hash function is used to map search keys to corresponding buckets. A hash function is useful, as it maps data of arbitrary size to data of fixed size.
 - Can only support equality predicates. Hash functions are supposed to be random, so it cannot support range operations.
@@ -375,8 +377,7 @@ If we use 8kb pages to store integers and pointers, we can store roughly 500 ent
 - Sorted File: files compacted after deletion
 - B+ Tree: 100 pages/directory page, 80% fill factor
 - Hash Index: no overflow, 80% fill factor
-
-![](https://github.com/shy2116/project1/blob/master/Cost%20table.PNG?raw=true)
+ <img src="https://github.com/shy2116/project1/blob/master/Cost%20table.PNG" width="400px" />
 
 **B:** # of data pages
 **D:** time to read/write a page
