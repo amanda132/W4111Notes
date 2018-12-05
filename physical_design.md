@@ -215,8 +215,7 @@ A data page is just a bunch of records + two pointers
 - If we want to read and write data, we will start at the first page, and read on until the record I care about. 
 - Since this is unordered, looking up records will still require reading potentially all the pages. This is the dumbest way of representing it.
 - Smarter way: keep track of which pages have full data and which pages have free space. (as shown in the image below).
-
-![](https://github.com/pyw2102/w4111ScribedNotes/blob/master/Physical-Design/heapFile.png?raw=true)
+<img src="https://github.com/pyw2102/w4111ScribedNotes/blob/master/Physical-Design/heapFile.png" width="400px" />
 
 ### What might be a smarter way of doing this? 
 - We can have pointers to all pages. Instead of single header page, we use a directory. 
@@ -225,8 +224,8 @@ A data page is just a bunch of records + two pointers
 - Note that there is there are multiple data page rather than one is because when a record is removed from a full data page, the pointer of that page is reassigned to the end of the data page with free space.
 - Even smarter: we can ensure the pages are sorted. In order to do that, the directory also has to keep track of the minimum and maximum value of all the data in each page. This will allow us to do binary search faster. Slightly faster if we start storing more information in the header page. 
 - If you want to search for specific records, this way still requires you to read everything . 
-![](https://github.com/pyw2102/w4111ScribedNotes/blob/master/Physical-Design/directory.png?raw=true)
 
+<img src="https://github.com/pyw2102/w4111ScribedNotes/blob/master/Physical-Design/directory.png" width="400px" />
 
 ## 4.3 Indexes
 ### (i). Reason for using index
@@ -260,7 +259,8 @@ A data page is just a bunch of records + two pointers
 `SELECT name FROM users WHERE age > 18`
 - Because sid does not exist in their WHERE clauses, the idx1 cannot be used for these queries. If no other indexes are available, we can do no better than a full table scan.
 
-![](https://github.com/shy2116/project1/blob/master/SQL%20index.PNG?raw=true)
+<img src="https://github.com/shy2116/project1/blob/master/SQL%20index.PNG" width="400px" />
+
 
 - The database optimizer makes a cost analysis of the different indexes available and selects the method it deems the most efficient.
 ![](https://github.com/amanda132/W4111Notes/blob/master/Screen%20Shot%202018-11-13%20at%204.24.44%20PM.png?raw=true)
