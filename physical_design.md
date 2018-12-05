@@ -266,10 +266,11 @@ SELECT name FROM users WHERE sid > 11111 AND age > 18
 
 
 - The database optimizer makes a cost analysis of the different indexes available and selects the method it deems the most efficient.
-<img src="https://github.com/amanda132/W4111Notes/blob/master/Screen%20Shot%202018-11-13%20at%204.24.44%20PM.png" width="400px" />
+
 
 ### (iii). High Level (Primary) Index Structure
-![](https://github.com/shy2116/project1/blob/master/High%20Level%20(Primary)%20index%20structure.PNG?raw=true)
+<img src="https://github.com/amanda132/W4111Notes/blob/master/Screen%20Shot%202018-11-13%20at%204.24.44%20PM.png" width="400px" />
+<img src="https://github.com/shy2116/project1/blob/master/High%20Level%20(Primary)%20index%20structure.PNG" />
 - The index and data entries (corresponding to index pages and leaf nodes) in the illustration make up the index.
 - In a "Primary Structure," the actual data records (entire tuples of a table) are stored in the leaf nodes of the index, stored on the index key (search key).
 - This structure has two significant page I/O cost implications:
