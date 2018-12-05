@@ -137,9 +137,8 @@ Operating systems also manage space on disk. Typically, an operating system supp
 - The data we store is in terms of pages. 
 - On disk, we store a file that represents Customers Table. We split and store Customers Table as pages. 
 
-![](https://github.com/pyw2102/w4111ScribedNotes/blob/master/Physical-Design/table.png?raw=true)
 
-### Disk Space Interface
+### i) Disk Space Interface
 Below is the API. There are 4 ways of access things.
 
 DiskInterface: API, four ways of accessing things
@@ -172,8 +171,8 @@ The buffer manager is the software layer that is responsible for bringing pages 
 
 # 4. Files and Indexes
 
-### Record, Page and File Abstractions
-![](https://github.com/amanda132/W4111Notes/blob/master/file_page.png?raw=true)
+## Record, Page and File Abstractions
+<img src="https://github.com/amanda132/W4111Notes/blob/master/file_page.png" width="400px" />
 * File is a collection of pages for which if you collect all the pages together, you get all the data. 
 * Everything is going to be stored as files. 
 * A page is  “collection” of records because we can’t keep track of the order. Keeping track of the order is not needed as a guarantee. However, it is useful to have sorted pages to be able to perform binary search.
