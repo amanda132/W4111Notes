@@ -71,7 +71,7 @@ You can spend some money on RAM for active data, Disk for main database, seconda
 
 ![](https://github.com/pyw2102/w4111ScribedNotes/blob/master/Physical-Design/jimgray.png?raw=true)
 
-# 2. Disk
+# 2. Disk Space Management
 ##  2. 1 What is a disk? How a disk work?
 - Think of the disk as a very fast DVD or record player. Stack a bunch of the round disks on top of each other. The tip of the head will know how to read and write whatever is underneath it. This is how DVD and record players work. Each of the rings correspond to a track and it stores data. Each track is split into segments called Sector. 
 
@@ -79,12 +79,13 @@ You can spend some money on RAM for active data, Disk for main database, seconda
 
 - This a representation of hard drive. The tip of Head know how to read and write what ever underneath it. Each of the ring is a track, which stores data. Each track is separated into several sector.
 
-### Interesting properties:
+#### Interesting properties:
 1. The size of the sector is determined by the rotational angle rather than a fixed length. So the sector far away from center will be larger than the sector near the center. You can read more data outside than inside for a given amount of time.
 2. How much data you can read depends on the spin speed. You want to maximize the RPM.
 3. If you want to move the arm in/out to read some data, there will be a seek cost (moving the arm to access data). It dominates by far the cost of accessing data.
 
-![](https://github.com/pyw2102/w4111ScribedNotes/blob/master/Physical-Design/timetoaccess.png?raw=true)
+<img src="https://github.com/pyw2102/w4111ScribedNotes/blob/master/Physical-Design/timetoaccess.png" width="450px" />
+
 
 - Problem is the first 2 delays if you care about speed (the latency in which to get the first bit of data to read). We want to optimize seek and the rotational delays. Seeks are expensive, but reading things that is right underneath the head is very fast. This is called sequential access.
 - Sequential access: access to a computer data file that requires the user to read through the file from the beginning in the order in which it is stored.
@@ -120,6 +121,10 @@ We have seen that there is a  difference between random and sequential access. T
 - **Amortize** sequentially read & write big chunks of bytes 
 - **Cache** popular blocks
 - **Pre-fetch** what you will need later
+
+### Using OS File Systems to Manage Disk Space
+
+Operating systems also manage space on disk. Typically, an operating system supports the abstraction of a file as a sequence of bytes. The OS manages space on the disk and translates requests such as “Read byte i of file f” into corresponding low-level instructions: “Read block m of track t of cylinder c of disk d.” A database disk space manager could be built using OS files. For example, the entire database could reside in one or more OS files for which a number of blocks are allocated (by the OS) and initialized. The disk space manager is then responsible for managing the space in these OS files.
 
 ### What is the API between data base system and disk?
 - API is centered around a page, a fixed size block of data. This is the unit we pass around. We want to amortize the cost of having to move that arm. 
