@@ -70,7 +70,7 @@ You can spend some money on RAM for active data, Disk for main database, seconda
 - The above two examples of some of the things that influence design decisions. What does this mean? If you can afford multiple machines with lots of RAM, it makes sense to use Disk for other things you never access, and put everything on other machines. 
 - Jim Gray found the idea of transactions, recovery, and other core databases ideas. Below is a storage hierarchy analogy. Going to memory/RAM is like driving to Philly and then coming back. Going to Disk is like going to Pluto and back. (“You might as well give up on Tape.”- Prof Wu.)It is important to minimize the time you need to access data.
 
-![](https://github.com/pyw2102/w4111ScribedNotes/blob/master/Physical-Design/jimgray.png?raw=true)
+<img src="https://github.com/pyw2102/w4111ScribedNotes/blob/master/Physical-Design/jimgray.png" width="400px" />
 
 # 2. Disk Space Management
 ##  2. 1 What is a disk? How a disk work?
