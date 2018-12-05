@@ -171,7 +171,7 @@ The buffer manager is the software layer that is responsible for bringing pages 
 
 # 4. Files and Indexes
 We now turn our attention from the way pages are stored on disk and brought into main memory to the way pages are used to store records and organized into logical collections or files.
-## Record, Page and File Abstractions
+## 4.1 Record, Page and File Abstractions
 <img src="https://github.com/amanda132/W4111Notes/blob/master/file_page.png" width="400px" />
 
 - File is a collection of pages for which if you collect all the pages together, you get all the data. 
@@ -181,12 +181,15 @@ We now turn our attention from the way pages are stored on disk and brought into
   * e.g. a row in a table
 - Page: Collection of records
 - File: Collection of pages
+- Minimum API:
   * insert/delete/modify record
   * get(record_id) a record
   * scan all records
-- May be in multiple OS files spanning multiple disks
+- These are logical.
+- Different page organizations in a file have different access costs.
+- May be in multiple OS files spanning multiple disks.
 
-### Units that we’ll care about
+### (i). Units that we’ll care about
 - B # data pages on disk for relation
 - R # records per data age (we talk about it in terms of records, not the physical size of page) 
 - D avg time to read/write data page to/from disk. 
@@ -194,18 +197,20 @@ We now turn our attention from the way pages are stored on disk and brought into
 - I.e. if i have 100 records per page, and 100 pages in a table, then we’ll have roughly 10,000 records in that particular table. 
 - We ignore sequential access for now. It will be added back in later on.
 
-## Different ways to store a table
-- Criteria: accessing, deleting, inserting data
-- Unordered Heap Files
+## 4.2 Unordered Heap Files
 - Unordered collection of records
-- Pages allocated as collection grows
+- Pages allocated as we add records
+- Pages moved as we remove records
 - Need to track:
- - Pages in file
- - Free space on pages
- - Records on pages (which pages are free, which pages are full, etc)
- - Example: let's say you have a table with attributes (a int, b int).  Then you might store (say) 1000 (a, b) value pairs in one page.  One question is how you store them within a page --- sorted?  unsorted?  A second question is how to organize the pages in the table.  You may not be guaranteed there's contiguous sectors on the disk drive for all of the pages so some pages won't be next to each other.  So they will need to be able to "point" to their neighboring pages.  One way is to organize the pages as a linked list.
+  * Pages in file
+  * Free space on pages
+  * Records on pages (which pages are free, which pages are full, etc)
 
-### A data page is just a bunch of records + two pointers 
+#### Example 4.1
+Let's say you have a table with attributes (a int, b int).  Then you might store (say) 1000 (a, b) value pairs in one page.  One question is how you store them within a page --- sorted?  unsorted?  A second question is how to organize the pages in the table.  You may not be guaranteed there's contiguous sectors on the disk drive for all of the pages so some pages won't be next to each other.  So they will need to be able to "point" to their neighboring pages.  One way is to organize the pages as a linked list.
+
+### 4.2.1 Heap File
+A data page is just a bunch of records + two pointers 
 - Each data page as a pointer to the next and previous data page
 - If we want to read and write data, we will start at the first page, and read on until the record I care about. 
 - Since this is unordered, looking up records will still require reading potentially all the pages. This is the dumbest way of representing it.
@@ -215,44 +220,16 @@ We now turn our attention from the way pages are stored on disk and brought into
 
 ### What might be a smarter way of doing this? 
 - We can have pointers to all pages. Instead of single header page, we use a directory. 
-- You keep track of two numbers: the data page it points to, the amount of free space. 
-- Small constant cost to reading the directory to find which pages are free if you want to insert data
+- You keep track of two numbers: the data page it points to and the amount of free space. 
+- Small constant cost to reading the directory is to find which pages are free if you want to insert data
 - Note that there is there are multiple data page rather than one is because when a record is removed from a full data page, the pointer of that page is reassigned to the end of the data page with free space.
 - Even smarter: we can ensure the pages are sorted. In order to do that, the directory also has to keep track of the minimum and maximum value of all the data in each page. This will allow us to do binary search faster. Slightly faster if we start storing more information in the header page. 
 - If you want to search for specific records, this way still requires you to read everything . 
 ![](https://github.com/pyw2102/w4111ScribedNotes/blob/master/Physical-Design/directory.png?raw=true)
 
-##L20: Disk Storage, Heap Files, B+ Trees, Hash Files, Single Operation Optimizations
 
-## Pre-lecture Primer
-- **Question:** How can we access data quickly?
-- **Thought:** We need different options with different trade-offs to compare.
-
-![](https://github.com/shy2116/project1/blob/master/disk.jpg?raw=true)
-
-- **Visual:** Disks have tracks, and data is stored on sectors along a track. An arm then reads this data. Sectors are roughly parallel to the concept of pages, the unit of data transfer and manipulation we will be using.
-
-- **Basic scenario V1:** We store data from tables in these pages at random, and assign a pointer to a page from which to start from.
- - Q: Is this acceptable?
- - A: No, we need a way to move from one page to another.
-
-- **Basic Scenario V2 (linked list):** Let’s add pointers from one page to another and a backward pointer for good measure. 
-This is functional, but we have to read through all the data to find something
-- **Basic Scenario V3 (sorted linked list):** All the data along the linked list is sorted by a particular primary key, optimized for a specific query.
- - Q: Can we run a binary search on this? No.
- - Q: How do you find the middle page? You can’t.
-We need something to tell us where the pages are and what they contain without having to read all the data.
-
-- **Basic Scenario V4 (directories):** Let’s create an “upper level” set of pages that serve as directories pointing to these pages
- - Q: What if we have a billion pages in the lower level, and we are only able to narrow it down to a million “upper level” directories?
- - A: We can recursively create additional levels of directories
- - Additional observation: We can use directories to find a starting point, and once we get to a page in a sorted list, we can scroll through without having to go back up the tree.
-
-- **Basic Scenario V5 (Alternative directory):** Instead of pointing to pages, we can point to records
- - This is useful if we don't want to deal with sorted data, which can be difficult to maintain
-
-## Indexes
-### Reason for using index
+## 4.3 Indexes
+### (i). Reason for using index
 - **Idea:** If you know you’re going to do something often, it’s worthwhile to make sure it can be done fast
  - Abraham Lincoln: "If I had eight hours to chop down a tree, I'd spend six sharpening my ax."
  - Eugene Wu: "If I had eight hours to chop down a tree, I'd spend six organizing my indexes." Fall 2018
