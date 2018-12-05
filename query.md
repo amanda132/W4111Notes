@@ -324,6 +324,8 @@ for opage in outer:
         for irow in index.get(orow.p):
            yield (row, irow)
 ```
+
+## 5.4 Recap
 <img src = "https://github.com/xz2581/project1/blob/master/9.png">
 
 #### Questions:
