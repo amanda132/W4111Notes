@@ -231,18 +231,17 @@ What might be a smarter way of doing this?
 ## 4.3 Indexes
 ### (i). Reason for using index
 - **Idea:** If you know you’re going to do something often, it’s worthwhile to make sure it can be done fast
- - Abraham Lincoln: "If I had eight hours to chop down a tree, I'd spend six sharpening my ax."
- - Eugene Wu: "If I had eight hours to chop down a tree, I'd spend six organizing my indexes." Fall 2018
 - **Point:** Creating and storing indexes on pages takes up additional space; however, the amount of space is relatively small compared to the database it's based on, and the queries they are tailored to can execute infinitely faster.
 - **Offline (vs. online):** Allowing a database to prepare all the data structures and encoding it needs, so queries can run fast and efficiently
 - **Two types of queries:**
- - Equality query: An attribute equals something
+ * Equality query: An attribute equals something
    - SELECT name FROM sailors WHERE sid = 11111
- - Range query: An attribute satisfies a set of inequalities
+ * Range query: An attribute satisfies a set of inequalities
    - Select name FROM students WHERE age > 19
 
-### Some knowledge about index
-- Indexes are defined wrt a search key, an attribute or a set of attributes that you want to be able to query efficiently. - **Naming collision:** A search key is different from a candidate key! A search key does not necessarily identify a unique tuple, it can be on any attribute, such as age or sex in a database containing information on everyone alive on Earth.
+### (ii). Some knowledge about index
+- Indexes are defined wrt a search key, an attribute or a set of attributes that you want to be able to query efficiently.  
+  * **Naming collision:** A search key is different from a candidate key! A search key does not necessarily identify a unique tuple, it can be on any attribute, such as age or sex in a database containing information on everyone alive on Earth.
 - **Application:** Search keys can provide faster access for WHERE clauses
 
 - In SQL, you can use the following syntax to assign an index for to a table. The CREATE INDEX command creates B-tree indexes by default, which tends to be appropriate for most situations
@@ -250,9 +249,11 @@ What might be a smarter way of doing this?
 `CREATE INDEX [idx1] ON users USING btree (sid)`
 
 - **Valid queries** using this index
-`SELECT name FROM users WHERE sid = 11111`
-`SELECT name FROM users WHERE sid > 11111`
-`SELECT name FROM users WHERE sid > 11111 AND age > 18`
+```
+SELECT name FROM users WHERE sid = 11111
+SELECT name FROM users WHERE sid > 11111
+SELECT name FROM users WHERE sid > 11111 AND age > 18
+```
 - The index key is on the attribute sid, so the index is specially tailored to queries with sid in their WHERE clauses.
 - In the third query, although the index is not on age, having an index on sid can significantly reduce the number of tuples that must be checked. 
 - **Invalid queries** using this index
