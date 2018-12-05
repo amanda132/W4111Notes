@@ -348,9 +348,9 @@ Thoughts on efficiency: In a “Secondary” index, each pointer is potentially 
 We can’t use this index because there is no criteria on age. We cannot do any better than simply reading through all the index data; however, considering that we are selecting an index value and the index is much smaller for a composite tree than the entire data set, this could potentially still be much faster.
  <img src="https://github.com/shy2116/project1/blob/master/fill%20factor%20and%20fanout.PNG" width="400px" />
  
-**Fill factor:** The portion of a page that is initially used to store data. The space leftover is a buffer to mitigate potentially expensive insertion costs. Empirical tests show that ~66% is the optimal factor
-**Fanout (“branching factor”):** How many pointers a directory page contains; how many children a given node can have.
-**Height:** Length of the path from the root to the leaf node. If a “Secondary” Index Structure is used, the page storing the data is not part of the height.
+- **Fill factor**: The portion of a page that is initially used to store data. The space leftover is a buffer to mitigate potentially expensive insertion costs. Empirical tests show that ~66% is the optimal factor
+- **Fanout (“branching factor”)**: How many pointers a directory page contains; how many children a given node can have.
+- **Height**: Length of the path from the root to the leaf node. If a “Secondary” Index Structure is used, the page storing the data is not part of the height.
 
 ### (iv). Some Numbers (8kb pages)
  <img src="https://github.com/shy2116/project1/blob/master/Some%20numbers.PNG" width="400px" />
