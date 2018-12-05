@@ -123,6 +123,49 @@ Basic approaches
 + 3. Index on projected fields: scan the index pages, avoid reading data 
 
 
+# III. Complementary Concepts
+## 3.1 Primary and Secondary Index
+    Primary: data is store in the leaf nodes. 
+    Secondary: leaf nodes only contain pointers to actual data files.
+    The query optimizer attempts to determine the most efficient way to execute a given query by considering the possible query plans.
+
+
+#### Example 3.1: Primary Index and Secondary Index Example
++ Example of a way to think about what is stored in data pages and directory pages
+<img src="https://github.com/xz2581/project1/blob/master/15.png" width="450">
+
+### 3.2 Preliminaries
++ IF we thought of the data being stored in the pages as tuples, THEN Underlying data has the schema R(a int, b int, c int, d int)
++ We built primary and secondary B+ trees with key = a.
++ Leaf page for primary index is data page. It stores the actual tuples.
++ Leaf page for secondary index is directory page. It stores a values with corresponding pointers to the actual tuples.
+
+#### Example 3.2 Assumptions
++ Each page can fit in 8000 bytes of data.
++ An integer costs 8 bytes.
++ For simplicity, each pointer object has the type int.
++ There are 10,000 tuples total.
+
+#### Calculations for the Height of the two B+ Trees
+<img src = "https://github.com/xz2581/project1/blob/master/2.png">
+
+#### Calculations for Accessing a Tuple for the two B+ Trees 
++ Finding the access cost for a tuple in a Primary B+ Tree 
+    + Because the leaf pages of a primary B+ tree are data pages, access cost is Height(access leaf page) + 1 (from data page access tuple)
++ Finding the access cost for  a tuple in a Secondary B+ Tree
+    + Because the leaf pages of a secondary B+ tree are directory pages, access cost is Height (access leaf page) + 1(from directory page access data page) + 1 (from data page access tuple)
+
+### 3.4 Additional Notes
++ Leaves of the primary index are pages similar to the data page, and leaves for the secondary index are pages similar to the directory page in the previous graph.
++ Leaf pages in both trees ARE sorted on the search key.
++ Typically, the secondary tree is smaller than the primary tree. For example, in this case, there are 40 leaf pages for primary and only 20 leaf pages for secondary.
++ When would we want to use secondary index (or when would using secondary index probably faster)?
+  + When the query only accesses attributes in the search key.
+    + ex1. count queries 
+    + ex2. Select a from R where a > 0 
+
+
+
 ## The Join 
 - Core database operation
  join of 10s of tables common in enterprise apps
