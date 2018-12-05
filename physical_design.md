@@ -37,12 +37,12 @@ API:
 
 ## 1.2 Disk vs RAM
 Data is literally driven by money.
-### Why Disk is important? 
+### i). Why Disk is important? 
 1. Disk is the cheapest per Gigabyte Storage mechanism in the market
 2. The process of analyzing and optimizing disk is the same process you might go through for optimizing any others
 3. It allows us to retrieve any page at a (more or less) fixed cost per page. However, if we read several pages in the order that they are stored physically, the cost can be much less than the cost of reading the same pages in a random order.
 
-### Why not store all in RAM?
+### ii). Why not store all in RAM?
 1. Cost too much:
 High-end Databases today store Petabyte (1000TB) of data
 60% of the cost of operating a database is in supplying, managing and maintaining disks.
@@ -54,7 +54,7 @@ You can spend some money on RAM for active data, Disk for main database, seconda
 - What does this mean? 
  You can prioritize where your money goes to- ram, disk, etc.
 
-### What ends up with is following architecture:
+### iii). What ends up with is following architecture:
 <img src="https://github.com/pyw2102/w4111ScribedNotes/blob/master/Physical-Design/layers.png" width="300px" />
 
 - You will have most of your storage capacity on disk, because it’s cheap.
@@ -63,7 +63,7 @@ You can spend some money on RAM for active data, Disk for main database, seconda
 - You can purchase RAM with reasonable prices.
 - The faster you go up the less storage space you have. You need to optimize the rest of the system. 
 
-### Interesting numbers:
+### iv). Interesting numbers:
 1. The cost of compression 1k bytes is 3000 ns. This means if you can compress your data sufficiently, that is more worthwhile to do than storing the uncompressed version in disk. It is faster to decompress the memory than to fetch the uncompressed version from disk.
 2. If you run a data center, the cost of access data in memory from another machine is .5 ms, which is significantly cheaper than disk.
 
