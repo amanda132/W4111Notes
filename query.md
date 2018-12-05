@@ -370,14 +370,14 @@ Given an operate, input and statistics, we should be able to estimate the cost
   - need to call estimate() on inputs!
   - use selectivity. assume attributes are independent
 
-#### Estimate Size of Output
-![](https://github.com/amanda132/W4111Notes/blob/master/Screen%20Shot%202018-11-20%20at%204.22.50%20PM.png?raw=true)
+#### Example 6.1
+<img src = "https://github.com/amanda132/W4111Notes/blob/master/Screen%20Shot%202018-11-20%20at%204.22.50%20PM.png" width = "450">
 + To check if col = v, we assume uniform guess.
 + To check col1 = col2, the selectivity is min(ICARD_{col1}, ICARD_{col2})/ICARD_{col1} * ICARD_{col2}.
 + To check col > v, we assume all the values are uniformly distributed.
 
-### Example
-![](https://github.com/amanda132/W4111Notes/blob/master/Screen%20Shot%202018-11-20%20at%204.29.02%20PM.png?raw=true)
+#### Example 6.2
+<img src = "https://github.com/amanda132/W4111Notes/blob/master/Screen%20Shot%202018-11-20%20at%204.29.02%20PM.png" width = "450">
 						 	 	 		
 - Naïvely
   - total records		1000* 10		=10,000
@@ -389,10 +389,9 @@ Given an operate, input and statistics, we should be able to estimate the cost
   + Selectivity is defined with respect to cross product size
   + estimate wrong if this is a key/foreign key (ex: assumes that dept.did is the primary key and emp.did refers to dept.did, then join on emp.did = dept.did should yield 1000 results, not 10, because each emp.did has a corresponding dept.did. But when emp.did and dept.did are both primary keys in each table, the result should be 10, i.e. the smaller one, because the primary key should be distinct.)
 
-### Example: switch orders
-![](https://github.com/amanda132/W4111Notes/blob/master/Screen%20Shot%202018-11-20%20at%204.33.36%20PM.png?raw=true)
-![](https://github.com/amanda132/W4111Notes/blob/master/Screen%20Shot%202018-11-20%20at%204.35.47%20PM.png?raw=true)
-
+### Example 6.3: switch orders
+<img src = "https://github.com/amanda132/W4111Notes/blob/master/Screen%20Shot%202018-11-20%20at%204.33.36%20PM.png" width = "450">
+<img src = "https://github.com/amanda132/W4111Notes/blob/master/Screen%20Shot%202018-11-20%20at%204.35.47%20PM.png" width = "450">
 
 ### 6.2 Join plan space
 A⨝B⨝C 
@@ -407,7 +406,7 @@ number of plans = number of permutation  * number of possible strings.
 + e.g. N = 10  number of plans =17,643,225,600
 Note: The following two joins are not the same!
       + The "outer" table in these two cases is likely to have different cardinalities thus the two joins is likely to have different costs
-<img src = "https://github.com/xz2581/project1/blob/master/13.png">
+<img src = "https://github.com/xz2581/project1/blob/master/13.png" width = "450">
 
 
 ### If the plan space is too large,we can simplify the set of plans so it's tractable and do the following:  
@@ -427,7 +426,7 @@ Note: The following two joins are not the same!
 5. Consider interesting sort orders  
 
 ### Reference Algorithm
-![](https://github.com/amanda132/W4111Notes/blob/master/Screen%20Shot%202018-11-20%20at%204.56.49%20PM.png?raw=true)
+<img src = "https://github.com/amanda132/W4111Notes/blob/master/Screen%20Shot%202018-11-20%20at%204.56.49%20PM.png" width = "450">
 
 ## 6.3 Selinger Optimizer Example A⋈<sub>x</sub>B⋈<sub>x</sub>C⋈<sub>x</sub>D
 ### Preliminaries
@@ -446,7 +445,7 @@ Note: The following two joins are not the same!
 + The existence of B tree indices B(x) and C(x) suggest that B or C should be the "inner" table for the two table join.
 + Assume we use indexed nested loops, the possible combinations of joins and their corresponding costs are: 
 
-<img src = "https://github.com/xz2581/project1/blob/master/3.png">
+<img src = "https://github.com/xz2581/project1/blob/master/3.png" width = "450">
 
 + Here we have a tie between AC and AB, let's say we decided to go with AC.
 
@@ -460,7 +459,7 @@ Note: The following two joins are not the same!
   + |A⋈C| = selectivity * |A X C|
            = 1/max(1K, 100K) * (1K*100K) = 1K
 + (AC)B and (AC)D with their corresponding costs:
-<img src = "https://github.com/xz2581/project1/blob/master/16.png">
+<img src = "https://github.com/xz2581/project1/blob/master/16.png" width = "450">
 + (AC)B is indeed the one with the less cost.
 
 ### Step Three: find the four-table join with the least cost
@@ -469,4 +468,4 @@ Note: The following two joins are not the same!
 
 
 ### The full process for determining the join orders is shown below
-<img src = "https://github.com/xz2581/project1/blob/master/7.png">
+<img src = "https://github.com/xz2581/project1/blob/master/7.png" width = "450">
