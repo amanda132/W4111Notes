@@ -217,7 +217,8 @@ A data page is just a bunch of records + two pointers
 - Smarter way: keep track of which pages have full data and which pages have free space. (as shown in the image below).
 <img src="https://github.com/pyw2102/w4111ScribedNotes/blob/master/Physical-Design/heapFile.png" width="400px" />
 
-### What might be a smarter way of doing this? 
+### 4.2.2 Dictionary 
+What might be a smarter way of doing this? 
 - We can have pointers to all pages. Instead of single header page, we use a directory. 
 - You keep track of two numbers: the data page it points to and the amount of free space. 
 - Small constant cost to reading the directory is to find which pages are free if you want to insert data
@@ -263,7 +264,7 @@ A data page is just a bunch of records + two pointers
 
 
 - The database optimizer makes a cost analysis of the different indexes available and selects the method it deems the most efficient.
-![](https://github.com/amanda132/W4111Notes/blob/master/Screen%20Shot%202018-11-13%20at%204.24.44%20PM.png?raw=true)
+<img src="https://github.com/amanda132/W4111Notes/blob/master/Screen%20Shot%202018-11-13%20at%204.24.44%20PM.png" width="400px" />
 
 ### High Level (Primary) Index Structure
 ![](https://github.com/shy2116/project1/blob/master/High%20Level%20(Primary)%20index%20structure.PNG?raw=true)
@@ -274,7 +275,8 @@ A data page is just a bunch of records + two pointers
  2. The data records stored in the leaf nodes are sorted and clustered by definition. This means that when a query has multiple matches corresponding to an equality condition, all the matches are conveniently clustered in the leaf pages for us to access. The number of data pages (leaf pages for the primary) we will access a maximum of: (# matching tuples) divided by (# tuples a page can hold). For a query with a handful of matches, this is much more efficient than having to access a distinct page for each matching tuple.
 
 ### High Level (Secondary) Index Structure
-![](https://github.com/shy2116/project1/blob/master/High%20Level%20(Secondary)%20index%20structure.PNG?raw=true)
+<img src="https://github.com/shy2116/project1/blob/master/High%20Level%20(Secondary)%20index%20structure.PNG" width="400px" />
+
 - As opposed to the "Primary Structure," the "Secondary Structure" separates the indexing from the data records. This means that both the index pages and leaf pages (illustrated as data entries) serve as directories, where all entries are of the form <search key, pointer>. The index pages point to lower level index pages or leaf pages, and the leaf pages point to the record pages (data pages) containing the actual tuples corresponding to our search keys.
 
 - This structure is a parallel to our Basic Scenario V4 (directories)
@@ -285,8 +287,9 @@ A data page is just a bunch of records + two pointers
 
 Because we use only pointers, a page can contain many more pointers, but need to incur an additional cost to access actual records.
 
-###B+ Tree Index
-![](https://github.com/shy2116/project1/blob/master/B.PNG?raw=true)
+### B+ Tree Index
+<img src="https://github.com/shy2116/project1/blob/master/B.PNG" width="400px" />
+
 - Everything is stored as pages (i.e. index pages, leaf pages, data pages)
 - Index pages contain values of the index key and pointers to child nodes
 - Leaf pages contain the data
@@ -302,7 +305,7 @@ Because we use only pointers, a page can contain many more pointers, but need to
 - Built bottom up: When you construct the B+ Tree, you need a starting point on the disk and the pages need to be sorted. - Given these two factors, it is much more efficient to build the tree bottom-up than inserting each record into the tree in a top-down approach.
 
 **Basic B+ Tree: search key <age>**
-![](https://github.com/shy2116/project1/blob/master/B0.PNG?raw=true)
+ <img src="https://github.com/shy2116/project1/blob/master/B0.PNG" width="400px" />
 - Note: This is a simplified example. The significant advantage of Btree indexes over the binary search alternative is that Btree indexes can have significantly higher fanouts (typically >100 rather than the 3 used in this example)
 - The bottom nodes are the data pages that contain the actual tuples. In this example, the tuples are simply the index key.
 - The index has at most 3 pointers corresponding to 3 conditions
