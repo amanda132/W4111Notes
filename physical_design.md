@@ -314,8 +314,8 @@ SELECT name FROM users WHERE sid > 11111 AND age > 18
 - The bottom nodes are the data pages that contain the actual tuples. In this example, the tuples are simply the index key.
 - The index has at most 3 pointers corresponding to 3 conditions
 - The index page has two index key values, 17 and 50. They are used to decide which child to follow when performing a search.
-- **Example: ** SELECT * FROM file WHERE key = 16
- - We start at the node, and evaluate our condition against the conditions corresponding the three pointers. With the two index key values, 17 and 50, serving as dividers for the pointers. The first, second, and third pointers corresponds to the following conditions, respectively: values < 17, 17 < values < 50, values > 50. Because our condition falls within the range of the first condition, we follow the first pointer. We read from left to right, first evaluating the key 14, which does not equal 16. We proceed right to the next search key (we can do this because a Btree is sorted on its index keys), and find that the key search key, 16, does in fact match our condition. We return this tuple, and continue scanning right to check for any additional matches. Because leaf nodes in a Btree index are connected by previous/next pointers, we can proceed to the next leaf page without having to go through the index again. Reading the next page from left to right, we determine that the next next key, 17, does not satisfy our condition, and so we end our search.
+- Example: SELECT FROM file WHERE key = 16
+  * We start at the node, and evaluate our condition against the conditions corresponding the three pointers. With the two index key values, 17 and 50, serving as dividers for the pointers. The first, second, and third pointers corresponds to the following conditions, respectively: values < 17, 17 < values < 50, values > 50. Because our condition falls within the range of the first condition, we follow the first pointer. We read from left to right, first evaluating the key 14, which does not equal 16. We proceed right to the next search key (we can do this because a Btree is sorted on its index keys), and find that the key search key, 16, does in fact match our condition. We return this tuple, and continue scanning right to check for any additional matches. Because leaf nodes in a Btree index are connected by previous/next pointers, we can proceed to the next leaf page without having to go through the index again. Reading the next page from left to right, we determine that the next next key, 17, does not satisfy our condition, and so we end our search.
 
 **Full B+ Tree with additional record pages**
 
@@ -333,6 +333,7 @@ SELECT name FROM users WHERE sid > 11111 AND age > 18
 **Composite search tree (multiple search keys)**
 
  <img src="https://github.com/shy2116/project1/blob/master/Bage.PNG" width="400px" />
+ 
 - A search tree sorts in order of search keys from left to right
 - Trade-off: Less entries in a given directory page, but you can answer queries based on two attributes.
 
