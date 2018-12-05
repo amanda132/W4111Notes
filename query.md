@@ -21,7 +21,7 @@
 -    Pull: The root operator is likely the cursor; Operators are demand-driven; Do not do anything until parent operator asks for the next data.
 
 #### Example
-![](https://github.com/amanda132/W4111Notes/blob/master/Screen%20Shot%202018-11-15%20at%204.38.46%20PM.png?raw=true)
+<img src = "https://github.com/amanda132/W4111Notes/blob/master/Screen%20Shot%202018-11-15%20at%204.38.46%20PM.png" width = "450"><img src = "https://github.com/amanda132/W4111Notes/blob/master/Screen%20Shot%202018-12-05%20at%201.02.36%20AM.png" width = "450">
 
 ### Condition 1: Data is not indexed.
 B: number of pages; M: number of pages matched in WHERE clause.
