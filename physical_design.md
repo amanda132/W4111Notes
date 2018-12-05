@@ -271,6 +271,7 @@ SELECT name FROM users WHERE sid > 11111 AND age > 18
 ### (iii). High Level (Primary) Index Structure
 <img src="https://github.com/amanda132/W4111Notes/blob/master/Screen%20Shot%202018-11-13%20at%204.24.44%20PM.png" width="400px" />
 <img src="https://github.com/shy2116/project1/blob/master/High%20Level%20(Primary)%20index%20structure.PNG" />
+
 - The index and data entries (corresponding to index pages and leaf nodes) in the illustration make up the index.
 - In a "Primary Structure," the actual data records (entire tuples of a table) are stored in the leaf nodes of the index, stored on the index key (search key).
 - This structure has two significant page I/O cost implications:
@@ -308,6 +309,7 @@ Because we use only pointers, a page can contain many more pointers, but need to
 - Built bottom up: When you construct the B+ Tree, you need a starting point on the disk and the pages need to be sorted. - Given these two factors, it is much more efficient to build the tree bottom-up than inserting each record into the tree in a top-down approach.
 
 **Basic B+ Tree: search key <age>**
+ 
  <img src="https://github.com/shy2116/project1/blob/master/B0.PNG" width="400px" />
 - Note: This is a simplified example. The significant advantage of Btree indexes over the binary search alternative is that Btree indexes can have significantly higher fanouts (typically >100 rather than the 3 used in this example)
 - The bottom nodes are the data pages that contain the actual tuples. In this example, the tuples are simply the index key.
@@ -317,9 +319,11 @@ Because we use only pointers, a page can contain many more pointers, but need to
  - We start at the node, and evaluate our condition against the conditions corresponding the three pointers. With the two index key values, 17 and 50, serving as dividers for the pointers. The first, second, and third pointers corresponds to the following conditions, respectively: values < 17, 17 < values < 50, values > 50. Because our condition falls within the range of the first condition, we follow the first pointer. We read from left to right, first evaluating the key 14, which does not equal 16. We proceed right to the next search key (we can do this because a Btree is sorted on its index keys), and find that the key search key, 16, does in fact match our condition. We return this tuple, and continue scanning right to check for any additional matches. Because leaf nodes in a Btree index are connected by previous/next pointers, we can proceed to the next leaf page without having to go through the index again. Reading the next page from left to right, we determine that the next next key, 17, does not satisfy our condition, and so we end our search.
 
 **Full B+ Tree with additional record pages**
+
  <img src="https://github.com/shy2116/project1/blob/master/B1.PNG" width="400px" />
 
 - The INDEX page is full, so we cannot add more child pointers to point to the two leaf nodes on the left. An additional index page must be added.
+
  <img src="https://github.com/shy2116/project1/blob/master/B2.PNG" width="400px" />
 
 - We have added an additional index page to cover the two additional nodes; however, in doing so we also had to create an additional level and an additional page to point to the two index pages below it.
@@ -328,6 +332,7 @@ Because we use only pointers, a page can contain many more pointers, but need to
 
 
 **Composite search tree (multiple search keys)**
+
  <img src="https://github.com/shy2116/project1/blob/master/Bage.PNG" width="400px" />
 - A search tree sorts in order of search keys from left to right
 - Trade-off: Less entries in a given directory page, but you can answer queries based on two attributes.
@@ -341,8 +346,8 @@ Thoughts on efficiency: In a “Secondary” index, each pointer is potentially 
 
 **Query 3: SELECT age WHERE name = ‘bobby’**
 We can’t use this index because there is no criteria on age. We cannot do any better than simply reading through all the index data; however, considering that we are selecting an index value and the index is much smaller for a composite tree than the entire data set, this could potentially still be much faster.
-
-![](https://github.com/shy2116/project1/blob/master/fill%20factor%20and%20fanout.PNG?raw=true)
+ <img src="https://github.com/shy2116/project1/blob/master/fill%20factor%20and%20fanout.PNG" width="400px" />
+ 
 **Fill factor:** The portion of a page that is initially used to store data. The space leftover is a buffer to mitigate potentially expensive insertion costs. Empirical tests show that ~66% is the optimal factor
 **Fanout (“branching factor”):** How many pointers a directory page contains; how many children a given node can have.
 **Height:** Length of the path from the root to the leaf node. If a “Secondary” Index Structure is used, the page storing the data is not part of the height.
