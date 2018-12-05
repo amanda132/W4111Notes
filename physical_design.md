@@ -108,7 +108,7 @@ You can spend some money on RAM for active data, Disk for main database, seconda
 - Disk has best cost-capacity ratio
 - SSDs help reduce read variance
 
-### 2.2 Random vs. sequential access
+## 2.2 Random vs. sequential access
 If you are doing random access (randomly placed in storage device), how many can you read per sec? 316 values/sec
 If you look at memory, you will see that there is higher throughput. 
 Random access between memory and disk is pretty much on par. 
@@ -122,13 +122,13 @@ We have seen that there is a  difference between random and sequential access. T
 - **Cache** popular blocks
 - **Pre-fetch** what you will need later
 
-## 2.2 Using OS File Systems to Manage Disk Space
+## 2.3 Using OS File Systems to Manage Disk Space
 
 Operating systems also manage space on disk. Typically, an operating system supports the abstraction of a file as a sequence of bytes. The OS manages space on the disk and translates requests such as “Read byte i of file f” into corresponding low-level instructions: “Read block m of track t of cylinder c of disk d.” A database disk space manager could be built using OS files. For example, the entire database could reside in one or more OS files for which a number of blocks are allocated (by the OS) and initialized. The disk space manager is then responsible for managing the space in these OS files.
 
 <img src="https://github.com/amanda132/W4111Notes/blob/master/Screen%20Shot%202018-12-04%20at%208.36.15%20PM.png" width="400px" /> <img src="https://github.com/amanda132/W4111Notes/blob/master/Screen%20Shot%202018-12-04%20at%208.36.19%20PM.png" width="400px" />
 
-## 2.3 What is the API between data base system and disk?
+## 2.4 What is the API between data base system and disk?
 - API is centered around a page, a fixed size block of data. This is the unit we pass around. We want to amortize the cost of having to move that arm. 
 
 - If page you read from disk too small: dominated by moving arm around
@@ -148,7 +148,7 @@ DiskInterface: API, four ways of accessing things
 * `newPage():page_id` allocate space on disk, give me the `page_id` of that 
 * `freePage(page_id)` I am done with this page, clears up space, so it can be reused.
 
-## 2.4 What is a page?
+## 2.5 What is a page?
 - Unit of transfer between storage and database
 - Typically fixed size
 - Small enough for one I/O to be fast
@@ -168,9 +168,9 @@ Note: Typically multiple of 4 kBs
 
 
 # 3. Buffer Manager
+The buffer manager is the software layer that is responsible for bringing pages from disk to main memory as needed. The buffer manager manages the available main memory by partitioning it into a collection of pages, which we collectively refer to as the buffer pool. The main memory pages in the buffer pool are called frames; it is convenient to think of them as slots that can hold a page (that usually resides on disk or other secondary storage media).
 
-
-
+# 4. Files and Indexes
 
 ### Record, Page and File Abstractions
 ![](https://github.com/amanda132/W4111Notes/blob/master/file_page.png?raw=true)
