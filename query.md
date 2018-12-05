@@ -347,7 +347,7 @@ for opage in outer:
 #### Optimizing joins within multiple tables:
 + Use Selinger Optimizer (ex. R⋈S⋈T)
 					
-### Selinger Optimizer 
+# VI. Selinger Optimizer 
 Goals: don’t go for best plan, go for least worst plan
 						
 Two Big Ideas:
@@ -362,7 +362,7 @@ Two Big Ideas:
    + Only join ordering remaining 
    + Try to reduce the possible trees to one that is manageable. 
 							
-### 1. Cost estimation
+## 6.1 Cost estimation
 Given an operate, input and statistics, we should be able to estimate the cost
 - Estimate cost for each operator
   - depends on input cardinalities (# tuples)  and data structure you have					
@@ -394,7 +394,7 @@ Given an operate, input and statistics, we should be able to estimate the cost
 ![](https://github.com/amanda132/W4111Notes/blob/master/Screen%20Shot%202018-11-20%20at%204.35.47%20PM.png?raw=true)
 
 
-### 2. Join plan space
+### 6.2 Join plan space
 A⨝B⨝C 
 Possible plans: 12
 + (AB)C (AC)B (BC)A (BA)C (CA)B (CB)A
@@ -429,7 +429,7 @@ Note: The following two joins are not the same!
 ### Reference Algorithm
 ![](https://github.com/amanda132/W4111Notes/blob/master/Screen%20Shot%202018-11-20%20at%204.56.49%20PM.png?raw=true)
 
-## Selinger Optimizer Example A⋈<sub>x</sub>B⋈<sub>x</sub>C⋈<sub>x</sub>D
+## 6.3 Selinger Optimizer Example A⋈<sub>x</sub>B⋈<sub>x</sub>C⋈<sub>x</sub>D
 ### Preliminaries
 + We have primary B trees B(x) and C(x) both with height 2.
   + C = cost of indexing
