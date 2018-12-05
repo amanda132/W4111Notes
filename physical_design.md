@@ -4,7 +4,9 @@
 * What properties that really matter for design the rest of the system?
 
 ## 1.1 Work from bottom up
-![](https://github.com/amanda132/W4111Notes/blob/master/Screen%20Shot%202018-12-04%20at%209.26.46%20AM.png?raw=true)
+
+<img src="https://github.com/amanda132/W4111Notes/blob/master/Screen%20Shot%202018-12-04%20at%209.26.46%20AM.png" width="300px" />
+
 - There is a total of 5 layers. Each of which is considered a separate component in the database management system software, and it provides a simple abstraction to layers above it, and makes assumptions about layers below it. 
 - Query Optimization and Execution: This is the layer that processes the query we wrote. It's parse it, checks the syntax and verify the SQL query. For example, it checks whether the table to the in the from clause exist or not or any typos in the query. Then comes all the possible relational plans, which are different ways of ordering the relational algebra. The optimizer finds the best plan base on the time cost.
 - Relational Operators: This layer takes the query from the above layer and implement the necessary relational operator. This layer is also called the execution engine, because execute the query above.
@@ -53,8 +55,7 @@ You can spend some money on RAM for active data, Disk for main database, seconda
  You can prioritize where your money goes to- ram, disk, etc.
 
 ### What ends up with is following architecture:
-
-![](https://github.com/pyw2102/w4111ScribedNotes/blob/master/Physical-Design/layers.png?raw=true)
+<img src="https://github.com/pyw2102/w4111ScribedNotes/blob/master/Physical-Design/layers.png" width="300px" />
 
 - You will have most of your storage capacity on disk, because it’s cheap.
 - As you go up the memory hierarchy, things become more expensive but faster. 
@@ -100,7 +101,7 @@ If you are doing random access (randomly placed in storage device), how many can
 If you look at memory, you will see that there is higher throughput. 
 Random access between memory and disk is pretty much on par. 
 
-![](https://github.com/pyw2102/w4111ScribedNotes/blob/master/Physical-Design/valuereadpersec.png?raw=true)
+<img src="https://github.com/pyw2102/w4111ScribedNotes/blob/master/Physical-Design/valuereadpersec.png" width="450px" />
 
 ### What’s Best? Depends on Application
 **Small databases:**
