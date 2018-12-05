@@ -229,7 +229,7 @@ What might be a smarter way of doing this?
 <img src="https://github.com/pyw2102/w4111ScribedNotes/blob/master/Physical-Design/directory.png" width="400px" />
 
 ## 4.3 Indexes
-### (i). Reason for using index
+### 4.3.1 Reason for using index
 - **Idea:** If you know you’re going to do something often, it’s worthwhile to make sure it can be done fast
 - **Point:** Creating and storing indexes on pages takes up additional space; however, the amount of space is relatively small compared to the database it's based on, and the queries they are tailored to can execute infinitely faster.
 - **Offline (vs. online):** Allowing a database to prepare all the data structures and encoding it needs, so queries can run fast and efficiently
@@ -244,11 +244,12 @@ What might be a smarter way of doing this?
   * **Naming collision:** A search key is different from a candidate key! A search key does not necessarily identify a unique tuple, it can be on any attribute, such as age or sex in a database containing information on everyone alive on Earth.
 - **Application:** Search keys can provide faster access for WHERE clauses
 
-- In SQL, you can use the following syntax to assign an index for to a table. The CREATE INDEX command creates B-tree indexes by default, which tends to be appropriate for most situations
+#### Example 4.2
+In SQL, you can use the following syntax to assign an index for to a table. The CREATE INDEX command creates B-tree indexes by default, which tends to be appropriate for most situations
 
-`CREATE INDEX [idx1] ON users USING btree (sid)`
+```CREATE INDEX [idx1] ON users USING btree (sid)```
 
-- **Valid queries** using this index
+**Valid queries** using this index
 ```
 SELECT name FROM users WHERE sid = 11111
 SELECT name FROM users WHERE sid > 11111
@@ -267,7 +268,7 @@ SELECT name FROM users WHERE sid > 11111 AND age > 18
 - The database optimizer makes a cost analysis of the different indexes available and selects the method it deems the most efficient.
 <img src="https://github.com/amanda132/W4111Notes/blob/master/Screen%20Shot%202018-11-13%20at%204.24.44%20PM.png" width="400px" />
 
-### High Level (Primary) Index Structure
+### (iii). High Level (Primary) Index Structure
 ![](https://github.com/shy2116/project1/blob/master/High%20Level%20(Primary)%20index%20structure.PNG?raw=true)
 - The index and data entries (corresponding to index pages and leaf nodes) in the illustration make up the index.
 - In a "Primary Structure," the actual data records (entire tuples of a table) are stored in the leaf nodes of the index, stored on the index key (search key).
@@ -275,7 +276,7 @@ SELECT name FROM users WHERE sid > 11111 AND age > 18
  1. The index file requires more pages to store the actual data records in the leaf pages, meaning the height of the tree could potentially be taller than the secondary structure.
  2. The data records stored in the leaf nodes are sorted and clustered by definition. This means that when a query has multiple matches corresponding to an equality condition, all the matches are conveniently clustered in the leaf pages for us to access. The number of data pages (leaf pages for the primary) we will access a maximum of: (# matching tuples) divided by (# tuples a page can hold). For a query with a handful of matches, this is much more efficient than having to access a distinct page for each matching tuple.
 
-### High Level (Secondary) Index Structure
+### (iv). High Level (Secondary) Index Structure
 <img src="https://github.com/shy2116/project1/blob/master/High%20Level%20(Secondary)%20index%20structure.PNG" width="400px" />
 
 - As opposed to the "Primary Structure," the "Secondary Structure" separates the indexing from the data records. This means that both the index pages and leaf pages (illustrated as data entries) serve as directories, where all entries are of the form <search key, pointer>. The index pages point to lower level index pages or leaf pages, and the leaf pages point to the record pages (data pages) containing the actual tuples corresponding to our search keys.
@@ -288,7 +289,7 @@ SELECT name FROM users WHERE sid > 11111 AND age > 18
 
 Because we use only pointers, a page can contain many more pointers, but need to incur an additional cost to access actual records.
 
-### B+ Tree Index
+### 4.3.2 B+ Tree Index
 <img src="https://github.com/shy2116/project1/blob/master/B.PNG" width="400px" />
 
 - Everything is stored as pages (i.e. index pages, leaf pages, data pages)
@@ -351,7 +352,7 @@ We can’t use this index because there is no criteria on age. We cannot do any 
 - We can find the other data entries easily by using only the data in height 2 and height 3 data, therefore, we only store a little data in memory but visit a huge quantity of data easily.
 If we use 8kb pages to store integers and pointers, we can store roughly 500 entries/page. At fill factor of 66%, this is roughly 300 entries/page. We can see that the number of entries we can store ramp up exponentially with the height of the tree. A tree of height 2 filled to its limit (66% fill factor) of 27 million integer/pointer entries takes up ~2.4MB of space. Considering laptops today come standard with at least 4GB of memory, 2.4MB can be stored entirely in memory, meaning no disk access is necessary. This is even possible with a tree of height 3, requiring 750MB. 
 
-### Hash Index
+### 4.2.3 Hash Index
  <img src="https://github.com/shy2116/project1/blob/master/Hash%20Index.PNG" width="400px" />
 
 - A hash index is a collection of buckets organized in an array. A hash function is used to map search keys to corresponding buckets. A hash function is useful, as it maps data of arbitrary size to data of fixed size.
@@ -359,7 +360,7 @@ If we use 8kb pages to store integers and pointers, we can store roughly 500 ent
 - Can hash on one or more attributes
 - Caution: If I use a poor hash function or the data is skewed, it may degenerate to a linked list data structure, because there will be more possibility to meet the collision when insert a page and will induce the reduce of performance.
 
-### Recap
+### 4.2.4 Recap
 **Question:** How can we access data quickly?
 
 **Thought:** We need different options with different trade-offs to compare.
