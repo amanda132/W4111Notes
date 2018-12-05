@@ -101,6 +101,54 @@ database today has much more complicated statistics information.
   + min and max keys in indexes
 + Database will use this information to compute the selectivity, otherwise it'll use the default estimate (5%).
 
+## 2.3 Re-cap
+### Condition 1: Data is not indexed.
+B: number of pages; M: number of pages matched in WHERE clause; Example query: SELECT a FROM R WHERE a>10
++    Execution Types:
+     +    Naive execution: Following query steps and only pass data to next level if it is completely processed in one level. Cost can be up to B+M+M given a where clause.
+     +    Pipelining. evaluate several operations simultaneously, and pass the result on to the next operation. Cost: B.
++    Comparison:
+     +    Pipelining is usually cheaper than naive execution, because temporary relations are not generated and stored on disk.
+     +    Pipelining is not always possible, e.g. sort because each page needs to be compared to the rest unsorted pages.
++    Pipeline Execution: Read a page from offers and pass to selection. As selection looks for tuples in the page that satisfy the predicate, can read the next page from offers. Similarly, pass valid pages to projection, and as projection returns value of projected attributes, selection can look for tuples in the page that satisfy the predicate.
+
+### Condition 2: Data is indexed as hash table.
+Treat data pages as buckets
+  + One primary bucket and possibly overflow buckets.
+  + A hashing function maps a key value into the bucket number where the data entry is stored .
+
+It is only applicable for equalities.
++ Example query: 
+    +    SELECT a FROM R WHERE a>10. 
+    +    Assume we have 10K pages, 
+    +    each page has 10 tuples, 
+    +    each page has 100 directory entries. 
+    +    Assume uniform distribution with ‘a’ ranging from 0 to 100. 
+    +    Need to go over all pages since hash table only supports equality. Cost: 10K pages
+￼￼￼￼￼￼￼
+#### Querying And Performance
++ Because buckets are indexed by this hashed key value, searching on this value is very efficient
+  + Since the number of buckets in a hashing file is known when the file is created, the primary pages can be stored on successive disk pages. Hence, a search ideally requires just one disk I/O, and insert and delete operations require two I/Os (read and write the page)
+    + Cost could be higher in the presence of overflow pages.
+   
+### Condition 3: Data is indexed as B+ Tree.
+It uses index to find all record, identify first index page and number of pages that matches and pass to projector operator. Cost is reduced to logarithm.
++    Example query: Same query as previous.
++    Comparison:
+     +    Primary B+ Tree: 
+          +    Number of leaf pages: 10K. 
+          +    Number of pages need to read: 90%x10K=9K. 
+          +    Given 100 DEs of each page, number of pages one level up: 10K/100=100. 
+          +    One level up is 1 page, root page. 
+          +    Total height: log100(10K)=2. 
+          +    Total cost: 9K+2.
+     +    Secondary B+ Tree: 
+          +    leaf pages store pointers to tuples.
+          +    Number of leaf pages = Total Number of tuples/number of DEs in each page = 10x10K/100=1K
+          +    Given 100 DEs of each page, number of pages one level up: 1K/100=10. 
+          +    One level up is 1 page, root page. 
+          +    Total height: 3. 
+          +    Total cost: 90K+900+2. (2 to find start point, 900 for find all match pages(pointer), 90K = 900 * 100 (tuples per data page))
 
 # III. Predicate Push down: 
 <img src = "https://github.com/xz2581/project1/blob/master/8.png">
