@@ -16,23 +16,33 @@
     (includes, e.g., whether index is used, join algorithms, . . . ) 
     among all semantically equivalent expressions, the one with the least costly evaluation plan is chosen.
 
-## Query Evaluation
+# 2. Query Evaluation
 -    Push: Operators are input-driven; As operator gets data, push it to parent operator.
 -    Pull: The root operator is likely the cursor; Operators are demand-driven; Do not do anything until parent operator asks for the next data.
 
-#### Example
-<img src = "https://github.com/amanda132/W4111Notes/blob/master/Screen%20Shot%202018-11-15%20at%204.38.46%20PM.png" width = "450"><img src = "https://github.com/amanda132/W4111Notes/blob/master/Screen%20Shot%202018-12-05%20at%201.02.36%20AM.png" width = "450">
+#### 2.1 Example
+<img src = "https://github.com/amanda132/W4111Notes/blob/master/Screen%20Shot%202018-12-05%20at%201.08.14%20AM.png?raw=true" width = "450">
 
-### Condition 1: Data is not indexed.
-B: number of pages; M: number of pages matched in WHERE clause.
-+    Execution Types:
-     +    Naive execution: Following query steps and only pass data to next level if it is completely processed in one level. Cost can be up to B+M+M given a where clause.
-     +    Pipelining. evaluate several operations simultaneously, and pass the result on to the next operation. Cost: B.
-+    Comparison:
-     +    Pipelining is usually cheaper than naive execution, because temporary relations are not generated and stored on disk.
-     +    Pipelining is not always possible, e.g. sort because each page needs to be compared to the rest unsorted pages.
-+    Example query: SELECT a FROM R WHERE a>10
-+    Pipeline Execution: Read a page from offers and pass to selection. As selection looks for tuples in the page that satisfy the predicate, can read the next page from offers. Similarly, pass valid pages to projection, and as projection returns value of projected attributes, selection can look for tuples in the page that satisfy the predicate.
+- Push-based execution (op at a time)
+ * read R
+ * filter a>10 and write out 
+ * read and project a
+ * Cost: B + M + M
+
+- Pipelined exec (page at a time): Read a page from offers and pass to selection. As selection looks for tuples in the page that satisfy the predicate, can read the next page from offers. Similarly, pass valid pages to projection, and as projection returns value of projected attributes, selection can look for tuples in the page that satisfy the predicate.
+ * read first page of R 
+ * pass to σ filter $a > 10$ and pass to $\pi$ 
+ * project a (all operators run concurrently) 
+ * Cost: B
+ * Pipelining is usually cheaper than naive execution, because temporary relations are not generated and stored on disk. However, it is not always possible. For example, sorting, as each page needs to be compared to the rest unsorted pages.
+
+- **If R is indexed ** Hash index
+ * Not appropriate
+- B+Tree index
+ * use a>10 to find initial data page 
+ * scan leaf data pages
+ * Cost: $\log_F B + M$.
+ 
 
 ### Condition 2: Data is indexed as hash table.
  Treat data pages as buckets
