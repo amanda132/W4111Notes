@@ -275,8 +275,8 @@ SELECT name FROM users WHERE sid > 11111 AND age > 18
 - The index and data entries (corresponding to index pages and leaf nodes) in the illustration make up the index.
 - In a "Primary Structure," the actual data records (entire tuples of a table) are stored in the leaf nodes of the index, stored on the index key (search key).
 - This structure has two significant page I/O cost implications:
- 1. The index file requires more pages to store the actual data records in the leaf pages, meaning the height of the tree could potentially be taller than the secondary structure.
- 2. The data records stored in the leaf nodes are sorted and clustered by definition. This means that when a query has multiple matches corresponding to an equality condition, all the matches are conveniently clustered in the leaf pages for us to access. The number of data pages (leaf pages for the primary) we will access a maximum of: (# matching tuples) divided by (# tuples a page can hold). For a query with a handful of matches, this is much more efficient than having to access a distinct page for each matching tuple.
+  * The index file requires more pages to store the actual data records in the leaf pages, meaning the height of the tree could potentially be taller than the secondary structure.
+  * The data records stored in the leaf nodes are sorted and clustered by definition. This means that when a query has multiple matches corresponding to an equality condition, all the matches are conveniently clustered in the leaf pages for us to access. The number of data pages (leaf pages for the primary) we will access a maximum of: (# matching tuples) divided by (# tuples a page can hold). For a query with a handful of matches, this is much more efficient than having to access a distinct page for each matching tuple.
 
 ### (iv). High Level (Secondary) Index Structure
 <img src="https://github.com/shy2116/project1/blob/master/High%20Level%20(Secondary)%20index%20structure.PNG" width="400px" />
@@ -285,9 +285,9 @@ SELECT name FROM users WHERE sid > 11111 AND age > 18
 
 - This structure is a parallel to our Basic Scenario V4 (directories)
 - Because the leaf pages only contain pointers, as opposed to actual records, which are almost always smaller in size than actual records, a leaf node can hold many more data entries. This has 3 important page I/O cost implications:
- 1. The index file requires relatively less pages with a secondary structure, allowing for the height of the index tree to potentially be shorter.
- 2. Because the leaf pages only contain pointers, an additional page access is required to to follow this pointer and access the data page containing the associated tuple.
- 3. Assuming a reasonably high selectivity (low % of matches relative to total number of records in file), each pointer can be expected to point to a distinct page, requiring a page access for each qualifying record. Refer back to the cost advantage of using the primary structure.
+  * The index file requires relatively less pages with a secondary structure, allowing for the height of the index tree to potentially be shorter.
+  * Because the leaf pages only contain pointers, an additional page access is required to to follow this pointer and access the data page containing the associated tuple.
+  * Assuming a reasonably high selectivity (low % of matches relative to total number of records in file), each pointer can be expected to point to a distinct page, requiring a page access for each qualifying record. Refer back to the cost advantage of using the primary structure.
 
 Because we use only pointers, a page can contain many more pointers, but need to incur an additional cost to access actual records.
 
