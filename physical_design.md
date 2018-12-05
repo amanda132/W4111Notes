@@ -73,14 +73,14 @@ You can spend some money on RAM for active data, Disk for main database, seconda
 <img src="https://github.com/pyw2102/w4111ScribedNotes/blob/master/Physical-Design/jimgray.png" width="400px" />
 
 # 2. Disk Space Management
-##  2. 1 What is a disk? How a disk work?
+##  2.1 What is a disk? How a disk work?
 - Think of the disk as a very fast DVD or record player. Stack a bunch of the round disks on top of each other. The tip of the head will know how to read and write whatever is underneath it. This is how DVD and record players work. Each of the rings correspond to a track and it stores data. Each track is split into segments called Sector. 
 
 ![](https://github.com/amanda132/W4111Notes/blob/master/Screen%20Shot%202018-12-04%20at%209.54.16%20AM.png?raw=true)
 
 - This a representation of hard drive. The tip of Head know how to read and write what ever underneath it. Each of the ring is a track, which stores data. Each track is separated into several sector.
 
-#### Interesting properties:
+### i) Interesting properties:
 1. The size of the sector is determined by the rotational angle rather than a fixed length. So the sector far away from center will be larger than the sector near the center. You can read more data outside than inside for a given amount of time.
 2. How much data you can read depends on the spin speed. You want to maximize the RPM.
 3. If you want to move the arm in/out to read some data, there will be a seek cost (moving the arm to access data). It dominates by far the cost of accessing data.
@@ -95,15 +95,7 @@ You can spend some money on RAM for active data, Disk for main database, seconda
 - Rotational delay: the data you want is not directly underneath the reader, so you need to wait until the disk rotates until you can actually read that thing.
 - The key thing here is to reduce seek and rotational delays: HW & SW approaches. 
 
-
-### Random vs. sequential access
-If you are doing random access (randomly placed in storage device), how many can you read per sec? 316 values/sec
-If you look at memory, you will see that there is higher throughput. 
-Random access between memory and disk is pretty much on par. 
-
-<img src="https://github.com/pyw2102/w4111ScribedNotes/blob/master/Physical-Design/valuereadpersec.png" width="450px" />
-
-### What’s Best? Depends on Application
+### ii) What’s Best? Depends on Application
 **Small databases:**
 - All global daily weather since 1929:20GB 
 - 2000 US Census: 200GB
@@ -116,6 +108,13 @@ Random access between memory and disk is pretty much on par.
 - Disk has best cost-capacity ratio
 - SSDs help reduce read variance
 
+### 2.2 Random vs. sequential access
+If you are doing random access (randomly placed in storage device), how many can you read per sec? 316 values/sec
+If you look at memory, you will see that there is higher throughput. 
+Random access between memory and disk is pretty much on par. 
+
+<img src="https://github.com/pyw2102/w4111ScribedNotes/blob/master/Physical-Design/valuereadpersec.png" width="450px" />
+
 ### Strategies for Fast Data Access
 We have seen that there is a  difference between random and sequential access. Therefore, we want to optimize for sequential accesses.
 
@@ -123,14 +122,13 @@ We have seen that there is a  difference between random and sequential access. T
 - **Cache** popular blocks
 - **Pre-fetch** what you will need later
 
-### Using OS File Systems to Manage Disk Space
+## 2.2 Using OS File Systems to Manage Disk Space
 
 Operating systems also manage space on disk. Typically, an operating system supports the abstraction of a file as a sequence of bytes. The OS manages space on the disk and translates requests such as “Read byte i of file f” into corresponding low-level instructions: “Read block m of track t of cylinder c of disk d.” A database disk space manager could be built using OS files. For example, the entire database could reside in one or more OS files for which a number of blocks are allocated (by the OS) and initialized. The disk space manager is then responsible for managing the space in these OS files.
 
-<img src="https://github.com/amanda132/W4111Notes/blob/master/Screen%20Shot%202018-12-04%20at%208.36.15%20PM.png" width="450px" />
-<img src="https://github.com/amanda132/W4111Notes/blob/master/Screen%20Shot%202018-12-04%20at%208.36.19%20PM.png" width="450px" />
+<img src="https://github.com/amanda132/W4111Notes/blob/master/Screen%20Shot%202018-12-04%20at%208.36.15%20PM.png" width="400px" /> <img src="https://github.com/amanda132/W4111Notes/blob/master/Screen%20Shot%202018-12-04%20at%208.36.19%20PM.png" width="400px" />
 
-### What is the API between data base system and disk?
+## 2.3 What is the API between data base system and disk?
 - API is centered around a page, a fixed size block of data. This is the unit we pass around. We want to amortize the cost of having to move that arm. 
 
 - If page you read from disk too small: dominated by moving arm around
@@ -141,7 +139,16 @@ Operating systems also manage space on disk. Typically, an operating system supp
 
 ![](https://github.com/pyw2102/w4111ScribedNotes/blob/master/Physical-Design/table.png?raw=true)
 
-## 2.2 What is a page?
+### Disk Space Interface
+Below is the API. There are 4 ways of access things.
+
+DiskInterface: API, four ways of accessing things
+* `readPage(page_id): data` give it a page id, database will translate that into a position on the disk drive
+* `writePage(page_id, data)` do the same thing as readPage, but also provide a data
+* `newPage():page_id` allocate space on disk, give me the `page_id` of that 
+* `freePage(page_id)` I am done with this page, clears up space, so it can be reused.
+
+## 2.4 What is a page?
 - Unit of transfer between storage and database
 - Typically fixed size
 - Small enough for one I/O to be fast
@@ -159,19 +166,10 @@ Note: Typically multiple of 4 kBs
 * MySQL: 16kB
 * MongoDB: 32kB
 
-### Strategies for Fast Data Access
-* Amortize: sequentially read & write big chunks of bytes
-* Cache popular blocks
-* Pre-fetch what you will need later
 
-### Disk Space Interface
-Below is the API. There are 4 ways of access things.
+# 3. Buffer Manager
 
-DiskInterface: API, four ways of accessing things
-* `readPage(page_id): data` give it a page id, database will translate that into a position on the disk drive
-* `writePage(page_id, data)` do the same thing as readPage, but also provide a data
-* `newPage():page_id` allocate space on disk, give me the `page_id` of that 
-* `freePage(page_id)` I am done with this page, clears up space, so it can be reused.
+
 
 
 ### Record, Page and File Abstractions
