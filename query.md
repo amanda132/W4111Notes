@@ -372,6 +372,7 @@ Given an operate, input and statistics, we should be able to estimate the cost
 
 #### Example 6.1
 <img src = "https://github.com/amanda132/W4111Notes/blob/master/Screen%20Shot%202018-11-20%20at%204.22.50%20PM.png" width = "450">
+
 + To check if col = v, we assume uniform guess.
 + To check col1 = col2, the selectivity is min(ICARD_{col1}, ICARD_{col2})/ICARD_{col1} * ICARD_{col2}.
 + To check col > v, we assume all the values are uniformly distributed.
