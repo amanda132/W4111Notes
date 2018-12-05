@@ -173,6 +173,7 @@ The buffer manager is the software layer that is responsible for bringing pages 
 We now turn our attention from the way pages are stored on disk and brought into main memory to the way pages are used to store records and organized into logical collections or files.
 ## Record, Page and File Abstractions
 <img src="https://github.com/amanda132/W4111Notes/blob/master/file_page.png" width="400px" />
+
 - File is a collection of pages for which if you collect all the pages together, you get all the data. 
 - Everything is going to be stored as files. 
 - A page is  “collection” of records because we can’t keep track of the order. Keeping track of the order is not needed as a guarantee. However, it is useful to have sorted pages to be able to perform binary search.
@@ -180,9 +181,9 @@ We now turn our attention from the way pages are stored on disk and brought into
   * e.g. a row in a table
 - Page: Collection of records
 - File: Collection of pages
-  -- insert/delete/modify record
-  -- get(record_id) a record
-  -- scan all records
+  * insert/delete/modify record
+  * get(record_id) a record
+  * scan all records
 - May be in multiple OS files spanning multiple disks
 
 ### Units that we’ll care about
