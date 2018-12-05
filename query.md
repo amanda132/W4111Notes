@@ -269,10 +269,12 @@ for row in outer:
 
 ## 5.2 Indexed Nested Loops Join					
 ```						
-for row in outer:
-    for irow in index.get(row[0], []):
-	yield (row, irow)
+for opage in outer: # read from disk 
+    for orow in opage: # in memory
+        for ipage in index.get(orow.p): # read from disk 
+	    joinrow(orow, ipage)
 ```
++ inner is already indexed on join attribute p
 + For every row in outer, do index look up and only iterates through everything that matches.		
 + Slightly less flexible
 + Only supports conditions that the index supports 
@@ -312,12 +314,15 @@ for each tuple t in A:
 + Cost = N + M + T × M × 0.05 × C<sub>1<sub>
 
 ```
-# for every sid in B, create a key, and then match all the tuple with that particular sid. 
-# By doing so, we can speed up C<sub>1<sub>
-index = build_hash_table(B)                    #N pages
-    for each tuple t in the A:                 #M pages,TM tuples					
-         if predicate(t):                      #5% of tuples satisfy predicate
-            lookup_in_index(t.sid)             #C1 cost
+index = initialize hash index
+for ipage in inner:
+    for irow in ipage: 
+        index.insert(irow.p, irow)
+
+for opage in outer: 
+    for orow in opage:
+        for irow in index.get(orow.p):
+           yield (row, irow)
 ```
 <img src = "https://github.com/xz2581/project1/blob/master/9.png">
 
