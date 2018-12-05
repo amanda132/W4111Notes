@@ -39,19 +39,19 @@
   * Cost: B
   * Pipelining is usually cheaper than naive execution, because temporary relations are not generated and stored on disk. However, it is not always possible. For example, sorting, as each page needs to be compared to the rest unsorted pages.
 
-- **If R is indexed** Hash index
+- (if R is indexed) Hash index
   * Not appropriate
-- B+Tree index
+- (if R is indexed) B+Tree index
   * use a>10 to find initial data page 
   * scan leaf data pages
   * Cost: $\log_F B + M$.
 
 ## 2.1 Push vs Pull?
--    Push: 
+- Push: 
    * Operators are input-driven
    * As operator gets data, push it to parent operator.
    * vectorization, batched computation
--    Pull: 
+- Pull: 
    * The root operator is likely the cursor
    * Operators are demand-driven
    * Do not do anything until parent operator asks for the next data.
@@ -60,14 +60,14 @@
 ## 2.2 How to pick Access paths?
 Access Path refers to the path chosen by the system to retrieve data after a structured query language (SQL) request is executed. A query may request at least one variable to be filled up with one value or more.
 
-### Index + matching condition
+### 2.2.1 Index + matching condition
 +    Sequential Scan: doesn't accept condition.
 +    Hash Index Search: accepts conjunction of equality conditions on all search keys.
 +    Tree Index Search: accepts conjunction of terms of prefix of search keys.
 
 Based on whether there is a "filter" operator directly above the scan operator, we can decide whether or not we want to use indices.
 
-### Selectivity
+### 2.2.2 Selectivity
 +    Ratio of # outputs satisfying predicates vs # inputs
 +    Assume attribute selectivity is independent
 +    If attributes is primary key, you know exactly one matches it, and number of value equals to cardinality.
@@ -88,7 +88,7 @@ Let: a=1 has 0.1 selectivity, and b>3 has 0.6 selectivity. The selectivity of a=
   + Ex5. A has 100 values, B has 10 values:
     + selectivity(A join B) = 1 / max(A, B) = 1 / max(100, 10) = 0.01
 
-### System Catalog Keeps Statistics
+### 2.2.3 System Catalog Keeps Statistics
 + The statistics info is kept as another table in most databases,
 we can query this table like we query anything else.
 + System R is the first relational database. [See more about System R](http://www.webopedia.com/TERM/S/System_R.html)
@@ -112,7 +112,7 @@ Which option is faster if we have a B+ tree index on a?
 + b)B pages : not using B tree, scans entire relation
 
 ## Projection with DISTINCT clause
-need to de-duplicate e.g., π</sub>rating<sub> Sailors
+need to de-duplicate e.g., π</sub>rating > 1<sub> Sailors
 						
 Basic approaches
 
@@ -120,7 +120,7 @@ Basic approaches
   + sort on rating, remove duplicates by scanning sorted data
   + O(2n + n): 2n to sort and n to scan
 + 2. Hash: partition into N buckets remove duplicates on insert						
-+ 3.Index on projected fields: scan the index pages, avoid reading data 
++ 3. Index on projected fields: scan the index pages, avoid reading data 
 
 
 ## The Join 
