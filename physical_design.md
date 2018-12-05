@@ -306,7 +306,7 @@ SELECT name FROM users WHERE sid > 11111 AND age > 18
 - Disk optimized: indexes are optimized for specific types of storage
 - Built bottom up: When you construct the B+ Tree, you need a starting point on the disk and the pages need to be sorted. - Given these two factors, it is much more efficient to build the tree bottom-up than inserting each record into the tree in a top-down approach.
 
-**Basic B+ Tree: search key <age>**
+### (i). Basic B+ Tree: search key <age>
  
  <img src="https://github.com/shy2116/project1/blob/master/B0.PNG" width="400px" />
  
@@ -317,7 +317,7 @@ SELECT name FROM users WHERE sid > 11111 AND age > 18
 - Example: SELECT FROM file WHERE key = 16
   * We start at the node, and evaluate our condition against the conditions corresponding the three pointers. With the two index key values, 17 and 50, serving as dividers for the pointers. The first, second, and third pointers corresponds to the following conditions, respectively: values < 17, 17 < values < 50, values > 50. Because our condition falls within the range of the first condition, we follow the first pointer. We read from left to right, first evaluating the key 14, which does not equal 16. We proceed right to the next search key (we can do this because a Btree is sorted on its index keys), and find that the key search key, 16, does in fact match our condition. We return this tuple, and continue scanning right to check for any additional matches. Because leaf nodes in a Btree index are connected by previous/next pointers, we can proceed to the next leaf page without having to go through the index again. Reading the next page from left to right, we determine that the next next key, 17, does not satisfy our condition, and so we end our search.
 
-**Full B+ Tree with additional record pages**
+### (ii). Full B+ Tree with additional record pages
 
  <img src="https://github.com/shy2116/project1/blob/master/B1.PNG" width="400px" />
 
@@ -330,7 +330,7 @@ SELECT name FROM users WHERE sid > 11111 AND age > 18
  - The height of our index has increased by 1 to a value of 2.
 
 
-**Composite search tree (multiple search keys)**
+### (iii). Composite search tree (multiple search keys)
 
  <img src="https://github.com/shy2116/project1/blob/master/Bage.PNG" width="400px" />
  
@@ -352,7 +352,7 @@ We can’t use this index because there is no criteria on age. We cannot do any 
 **Fanout (“branching factor”):** How many pointers a directory page contains; how many children a given node can have.
 **Height:** Length of the path from the root to the leaf node. If a “Secondary” Index Structure is used, the page storing the data is not part of the height.
 
-### Some Numbers (8kb pages)
+### (iv). Some Numbers (8kb pages)
  <img src="https://github.com/shy2116/project1/blob/master/Some%20numbers.PNG" width="400px" />
 
 - We can find the other data entries easily by using only the data in height 2 and height 3 data, therefore, we only store a little data in memory but visit a huge quantity of data easily.
