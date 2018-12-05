@@ -127,6 +127,9 @@ We have seen that there is a  difference between random and sequential access. T
 
 Operating systems also manage space on disk. Typically, an operating system supports the abstraction of a file as a sequence of bytes. The OS manages space on the disk and translates requests such as “Read byte i of file f” into corresponding low-level instructions: “Read block m of track t of cylinder c of disk d.” A database disk space manager could be built using OS files. For example, the entire database could reside in one or more OS files for which a number of blocks are allocated (by the OS) and initialized. The disk space manager is then responsible for managing the space in these OS files.
 
+<img src="https://github.com/amanda132/W4111Notes/blob/master/Screen%20Shot%202018-12-04%20at%208.36.15%20PM.png" width="450px" />
+<img src="https://github.com/amanda132/W4111Notes/blob/master/Screen%20Shot%202018-12-04%20at%208.36.19%20PM.png" width="450px" />
+
 ### What is the API between data base system and disk?
 - API is centered around a page, a fixed size block of data. This is the unit we pass around. We want to amortize the cost of having to move that arm. 
 
