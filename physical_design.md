@@ -362,9 +362,12 @@ If we use 8kb pages to store integers and pointers, we can store roughly 500 ent
  <img src="https://github.com/shy2116/project1/blob/master/Hash%20Index.PNG" width="400px" />
 
 - A hash index is a collection of buckets organized in an array. A hash function is used to map search keys to corresponding buckets. A hash function is useful, as it maps data of arbitrary size to data of fixed size.
+- Index = data pages + overflow data pages
 - Can only support equality predicates. Hash functions are supposed to be random, so it cannot support range operations.
 - Can hash on one or more attributes
 - Caution: If I use a poor hash function or the data is skewed, it may degenerate to a linked list data structure, because there will be more possibility to meet the collision when insert a page and will induce the reduce of performance.
+
+
 
 ### 4.2.4 Recap
 **Question:** How can we access data quickly?
