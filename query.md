@@ -171,24 +171,24 @@ Basic approaches
 + 3. Index on projected fields: scan the index pages, avoid reading data 
 
 
-# III. Complementary Concepts
-## 3.1 Primary and Secondary Index
+# IV. Complementary Concepts
+## 4.1 Primary and Secondary Index
     Primary: data is store in the leaf nodes. 
     Secondary: leaf nodes only contain pointers to actual data files.
     The query optimizer attempts to determine the most efficient way to execute a given query by considering the possible query plans.
 
 
-#### Example 3.1: Primary Index and Secondary Index Example
+#### Example 4.1: Primary Index and Secondary Index Example
 + Example of a way to think about what is stored in data pages and directory pages
 <img src="https://github.com/xz2581/project1/blob/master/15.png" width="450">
 
-### 3.2 Preliminaries
+### 4.2 Preliminaries
 + IF we thought of the data being stored in the pages as tuples, THEN Underlying data has the schema R(a int, b int, c int, d int)
 + We built primary and secondary B+ trees with key = a.
 + Leaf page for primary index is data page. It stores the actual tuples.
 + Leaf page for secondary index is directory page. It stores a values with corresponding pointers to the actual tuples.
 
-#### Example 3.2 Assumptions
+#### Example 4.2 Assumptions
 + Each page can fit in 8000 bytes of data.
 + An integer costs 8 bytes.
 + For simplicity, each pointer object has the type int.
@@ -203,7 +203,7 @@ Basic approaches
 + Finding the access cost for  a tuple in a Secondary B+ Tree
     + Because the leaf pages of a secondary B+ tree are directory pages, access cost is Height (access leaf page) + 1(from directory page access data page) + 1 (from data page access tuple)
 
-### 3.4 Additional Notes
+### 4.3 Additional Notes
 + Leaves of the primary index are pages similar to the data page, and leaves for the secondary index are pages similar to the directory page in the previous graph.
 + Leaf pages in both trees ARE sorted on the search key.
 + Typically, the secondary tree is smaller than the primary tree. For example, in this case, there are 40 leaf pages for primary and only 20 leaf pages for secondary.
@@ -214,7 +214,7 @@ Basic approaches
 
 
 
-## The Join 
+# V. The Join 
 - Core database operation
  join of 10s of tables common in enterprise apps
 						
@@ -225,7 +225,7 @@ Basic approaches
 - Best join implementation depends on the query, the data, the indices, hardware, etc
 
 
-### 1.Nested Loops Join
+## 5.1 Nested Loops Join
 ```		 	 	 		
 # outer ⨝1 inner
 # outer JOIN inner ON outer.1 = inner.1 
@@ -267,7 +267,7 @@ for row in outer:
 + You have to incur a quadratic cost for implement this join, ideally you want something linear, so we can try indexed nested loops join
 
 
-### 2.Indexed Nested Loops Join					
+## 5.2 Indexed Nested Loops Join					
 ```						
 for row in outer:
     for irow in index.get(row[0], []):
@@ -298,7 +298,7 @@ for each tuple t in A:
   + Cost is approximately M + T × M × C1 x 0.05
 
 
-### 3. Hash Join
+## 5.3 Hash Join
 + Type of index Nested Loops Join;
 + When no index on inner table A join B on sid
 + How: Create a hash table on inner loop and then run indexed nested loops
