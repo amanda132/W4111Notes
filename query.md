@@ -102,10 +102,9 @@ database today has much more complicated statistics information.
 + Database will use this information to compute the selectivity, otherwise it'll use the default estimate (5%).
 
 
-# Predicate Push down: 
+# III. Predicate Push down: 
 <img src = "https://github.com/xz2581/project1/blob/master/8.png">
-
-+ if I see (b), (b) can be transformed into (a) by pushing the selection operator down.
++ Access Path selection looks at operator right above the Scan. Thus, move filters close to Scan (change (b) -> (a) by pushing the selection operator down)
 + in a) we can combine scan data(R) and filter (a>10) together into index to find all the a > 10, but it is not applicable for b).
 
 Which option is faster if we have a B+ tree index on a?
