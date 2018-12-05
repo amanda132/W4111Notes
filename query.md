@@ -1,9 +1,10 @@
-## Background
+# I. Introduction
+## 1.1 Background
     Task: Find an efficient physical query plan (execution plan) for an sql query.
     Goal: minimize the evaluation time for the query, compute query result as fast as possible.
     Cost Factors: Disk accesses, read/write operations, [I/O, page transfer] (CPU time is typically ignored).
 
-## Translate Sql to query plan
+## 1.2 Translate Sql to query plan
 ![](https://github.com/amanda132/W4111Notes/blob/master/Screen%20Shot%202018-11-15%20at%204.32.41%20PM.png?raw=true)
 +    Query plan: A query plan (or query execution plan) is an ordered set of steps used to access data in a SQL relational database management system. This is a specific case of the relational model concept of access plans. It can be represented as a tree of relational operators. You can translate from SQL to relational algebra, or you can build the tree directly.
 +    Parsing and Translating: Translate the query into its internal form/ parse tree (Given query may have many kinds of trees). This is then translated into an expression of the relational algebra. – Parser checks syntax, validates relations, attributes and access permissions.
@@ -15,79 +16,46 @@
     An annotated expression specifying detailed evaluation strategy is called the execution plan 
     (includes, e.g., whether index is used, join algorithms, . . . ) 
     among all semantically equivalent expressions, the one with the least costly evaluation plan is chosen.
+## 1.3 What Optimization Options Do We Have?
++    Access Path 
++    Predicate push-down 
++    Join implementation 
++    Join ordering
 
-# 2. Query Evaluation
+# II. Access Path
 -    Push: Operators are input-driven; As operator gets data, push it to parent operator.
 -    Pull: The root operator is likely the cursor; Operators are demand-driven; Do not do anything until parent operator asks for the next data.
 
 #### 2.1 Example
-<img src = "https://github.com/amanda132/W4111Notes/blob/master/Screen%20Shot%202018-12-05%20at%201.08.14%20AM.png?raw=true" width = "450">
+<img src = "https://github.com/amanda132/W4111Notes/blob/master/Screen%20Shot%202018-12-05%20at%201.08.14%20AM.png?raw=true" width = "300">
 
 - Push-based execution (op at a time)
- * read R
- * filter a>10 and write out 
- * read and project a
- * Cost: B + M + M
+  * read R
+  * filter a>10 and write out 
+  * read and project a
+  * Cost: B + M + M
 
 - Pipelined exec (page at a time): Read a page from offers and pass to selection. As selection looks for tuples in the page that satisfy the predicate, can read the next page from offers. Similarly, pass valid pages to projection, and as projection returns value of projected attributes, selection can look for tuples in the page that satisfy the predicate.
- * read first page of R 
- * pass to σ filter $a > 10$ and pass to $\pi$ 
- * project a (all operators run concurrently) 
- * Cost: B
- * Pipelining is usually cheaper than naive execution, because temporary relations are not generated and stored on disk. However, it is not always possible. For example, sorting, as each page needs to be compared to the rest unsorted pages.
+  * read first page of R 
+  * pass to σ filter $a > 10$ and pass to $\pi$ 
+  * project a (all operators run concurrently) 
+  * Cost: B
+  * Pipelining is usually cheaper than naive execution, because temporary relations are not generated and stored on disk. However, it is not always possible. For example, sorting, as each page needs to be compared to the rest unsorted pages.
 
-- **If R is indexed ** Hash index
- * Not appropriate
+- **If R is indexed** Hash index
+  * Not appropriate
 - B+Tree index
- * use a>10 to find initial data page 
- * scan leaf data pages
- * Cost: $\log_F B + M$.
- 
+  * use a>10 to find initial data page 
+  * scan leaf data pages
+  * Cost: $\log_F B + M$.
 
-### Condition 2: Data is indexed as hash table.
- Treat data pages as buckets
-  + One primary bucket and possibly overflow buckets.
-  + A hashing function maps a key value into the bucket number where the data entry is stored .
-
-It is only applicable for equalities.
-+    Example query: 
-    +    SELECT a FROM R WHERE a>10. 
-    +    Assume we have 10K pages, 
-    +    each page has 10 tuples, 
-    +    each page has 100 directory entries. 
-    +    Assume uniform distribution with ‘a’ ranging from 0 to 100. 
-+    Need to go over all pages since hash table only supports equality. Cost: 10K pages
-￼￼￼￼￼￼￼
-### Querying And Performance
-+ Because buckets are indexed by this hashed key value, searching on this value is very efficient
-  + Since the number of buckets in a hashing file is known when the file is created, the primary pages can be stored on successive disk pages. Hence, a search ideally requires just one disk I/O, and insert and delete operations require two I/Os (read and write the page)
-    + Cost could be higher in the presence of overflow pages.
-   
-### Condition 3: Data is indexed as B+ Tree.
-It uses index to find all record, identify first index page and number of pages that matches and pass to projector operator. Cost is reduced to logarithm.
-+    Example query: Same query as previous.
-+    Comparison:
-     +    Primary B+ Tree: 
-          +    Number of leaf pages: 10K. 
-          +    Number of pages need to read: 90%x10K=9K. 
-          +    Given 100 DEs of each page, number of pages one level up: 10K/100=100. 
-          +    One level up is 1 page, root page. 
-          +    Total height: log100(10K)=2. 
-          +    Total cost: 9K+2.
-     +    Secondary B+ Tree: 
-          +    leaf pages store pointers to tuples.
-          +    Number of leaf pages = Total Number of tuples/number of DEs in each page = 10x10K/100=1K
-          +    Given 100 DEs of each page, number of pages one level up: 1K/100=10. 
-          +    One level up is 1 page, root page. 
-          +    Total height: 3. 
-          +    Total cost: 90K+900+2. (2 to find start point, 900 for find all match pages(pointer), 90K = 900 * 100 (tuples per data page))
-### Trade-off
+## 2.1 Push vs Pull?
 **Pull**
 pipelining
 
 **Push**
 vectorization, batched computation
-## Access path
+## 2.2 How to pick Access paths?
 Access Path refers to the path chosen by the system to retrieve data after a structured query language (SQL) request is executed. A query may request at least one variable to be filled up with one value or more.
 
 ### Index + matching condition
@@ -97,21 +65,15 @@ Access Path refers to the path chosen by the system to retrieve data after a str
 
 Based on whether there is a "filter" operator directly above the scan operator, we can decide whether or not we want to use indices.
 
-### How to pick access path
-+ 'SELECT' is required to choose the appropriate index to use.
-+ Depend on number of data pages: secondary indicies, less than 2%, not worthy to use.
-+ Selectivity only for selection operation.
+### Selectivity
++    Ratio of # outputs satisfying predicates vs # inputs
++    Assume attribute selectivity is independent
++    If attributes is primary key, you know exactly one matches it, and number of value equals to cardinality.
 
-### How to determine/compute selectivity
-+    Scan the whole data and multiple, assuming the distribution over all values is uniform.
-+    How many distinct values in a hash table.
-+    Default estimate -- if know nothing else, assume 5%.
+#### Example 2.2
+Let: a=1 has 0.1 selectivity, and b>3 has 0.6 selectivity. The selectivity of a=1 & b>3 is 0.1* 0.6 = 0.06.
 
-### Notice:
-        If attributes is primary key, you know exactly one matches it.
-        Number of value equals to cardinality.
-        Assumption: attribute selectivity is independent 
-
+#### Example 2.3
 + Example of computing selectivity:
   + Ex1. A has 100 values: 
     + selectivity(A = 1) = 1 / 100 = 0.01
@@ -124,8 +86,7 @@ Based on whether there is a "filter" operator directly above the scan operator, 
   + Ex5. A has 100 values, B has 10 values:
     + selectivity(A join B) = 1 / max(A, B) = 1 / max(100, 10) = 0.01
 
-## System Catalog Keeps Statistics
-
+### System Catalog Keeps Statistics
 + The statistics info is kept as another table in most databases,
 we can query this table like we query anything else.
 + System R is the first relational database. [See more about System R](http://www.webopedia.com/TERM/S/System_R.html)
