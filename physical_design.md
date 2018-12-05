@@ -283,13 +283,11 @@ SELECT name FROM users WHERE sid > 11111 AND age > 18
 
 - As opposed to the "Primary Structure," the "Secondary Structure" separates the indexing from the data records. This means that both the index pages and leaf pages (illustrated as data entries) serve as directories, where all entries are of the form <search key, pointer>. The index pages point to lower level index pages or leaf pages, and the leaf pages point to the record pages (data pages) containing the actual tuples corresponding to our search keys.
 
-- This structure is a parallel to our Basic Scenario V4 (directories)
 - Because the leaf pages only contain pointers, as opposed to actual records, which are almost always smaller in size than actual records, a leaf node can hold many more data entries. This has 3 important page I/O cost implications:
   * The index file requires relatively less pages with a secondary structure, allowing for the height of the index tree to potentially be shorter.
-  * Because the leaf pages only contain pointers, an additional page access is required to to follow this pointer and access the data page containing the associated tuple.
+  * Because the leaf pages only contain pointers, an additional page access is required to follow this pointer and access the data page containing the associated tuple.
   * Assuming a reasonably high selectivity (low % of matches relative to total number of records in file), each pointer can be expected to point to a distinct page, requiring a page access for each qualifying record. Refer back to the cost advantage of using the primary structure.
-
-Because we use only pointers, a page can contain many more pointers, but need to incur an additional cost to access actual records.
+  * Because we use only pointers, a page can contain many more pointers, but need to incur an additional cost to access actual records.
 
 ### 4.3.2 B+ Tree Index
 <img src="https://github.com/shy2116/project1/blob/master/B.PNG" width="400px" />
@@ -311,6 +309,7 @@ Because we use only pointers, a page can contain many more pointers, but need to
 **Basic B+ Tree: search key <age>**
  
  <img src="https://github.com/shy2116/project1/blob/master/B0.PNG" width="400px" />
+ 
 - Note: This is a simplified example. The significant advantage of Btree indexes over the binary search alternative is that Btree indexes can have significantly higher fanouts (typically >100 rather than the 3 used in this example)
 - The bottom nodes are the data pages that contain the actual tuples. In this example, the tuples are simply the index key.
 - The index has at most 3 pointers corresponding to 3 conditions
