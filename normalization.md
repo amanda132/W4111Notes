@@ -1,7 +1,7 @@
 
 
 
-# I. Redundancy and Anomalies
+# II. Redundancy and Anomalies
 In general, redundancy is bad. We want to find a systematic way to solve this problem.
 * Update Anomaly: If one copy of such repeated data is updated, an inconsistency is created unless all copies are similarly updated.
 * Insertion Anomaly: It may not be possible to store certain information, unless some other information is stored as well.
@@ -311,19 +311,6 @@ This means that if the intersection of R1 and R2 is a key for either R1 or R2, a
 
 **Note: here R1 intersect R2 is simply the intersection of the attributes in the relation. If R1=(A, B) and R2=(B, C), then R1 intersect R2 = B**
 
-#### Example 6.5
-<img src = "https://github.com/agango/Scribesnotes-image/blob/master/example2.png" width = "400">
-
-Why is this an example of lossy decomposition? In this case, (R1 intersect R2) = AB intersect BC = B. In table R1, B does not determine anything (we have 2 values of A for the same value of B), and the same for table R2. As we can see, when we join the two relations, we get new rows that were not there before. We have not been able to completely recover the original relation by joining R1 and R2. 
-
-What's correct?
-<img src = "https://github.com/agango/Scribesnotes-image/blob/master/example3.png" width = "400">
-
-Why is this correct?
-
-R1 intersect R2 = A, so we get the FD A -> AC (which can be decomposed to A->A, which is trivial, and A->C, which is a FD of R). This functional dependency is in the closure of F. 
-
-**Note:** Just as a quick note, the difference between a BCNF decomposition that loses a functional dependency, and an invalid BCNF decomposition is the lossless join component. Even if we have lost an FD in the new relations, if they can be joined together to recover the original relation, then they are in BCNF. However, a bad or invalid BCNF decomposition will suffer from lossy decomposition. 
  
 ### (2). What about dependency preservation?
 
