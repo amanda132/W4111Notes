@@ -1,6 +1,3 @@
-
-
-
 # II. Redundancy and Anomalies
 In general, redundancy is bad. We want to find a systematic way to solve this problem.
 * Update Anomaly: If one copy of such repeated data is updated, an inconsistency is created unless all copies are similarly updated.
@@ -81,11 +78,7 @@ So what does this table means? Well, here is the interpretation:
 
 For the above example, if we perform A+ (A closure), we would get ABC, giving us all of the attributes of relation R. Therefore, A is certainly a key for this relation.
 
-Keys: A
-
-Attributes used for keys: A
-
-Attributes not used for keys: B, C
+Keys: A; Attributes used for keys: A; Attributes not used for keys: B, C
 
 
 # V. Normal Forms
@@ -121,32 +114,7 @@ In words:
  * More importantly, we say an attribute is a superkey of a relation w.r.t. FDs iff every attribute in the relation is defined in the functional dependency (eg. given `ABC` and `A -> BC`, `A` is a superkey of `ABC` because `A` uniquely identifies `B` and `C` as stated in the FD `A -> BC`)
  * If you can not check a FD in a relation, it defaults to be true
 
-#### Example 5.3
-**Given the relation `IJKLM` and the functional dependency `IJ -> K`**
-
-| Relations | BCNF? | Reason |
-| ------ | ------ | ------ |
-| IJKLM | NO | Should be pretty obvious by now: `IJ` is not a superkey of `IJKLM` (and `K` is not in `IJ`) |
-| IJK, KLM | YES* | `IJ` is a superkey of `IJK`, but this is **NOT** desirable because we cannot recover the original table |
-| IJK, IJLM | YES | `IJ` is a superkey of `IJK` and we can perform a lossless join on `IJ` |
-
-**Ok what if we add the functional dependency `L -> M`?**
-
-| Relations | BCNF? | Reason |
-| ------ | ------ | ------ |
-| IJK, IJLM | NO | Now, because of our new FD `L` must also be a superkey which isn't true for `IJLM` |
-| IJK, LM | YES* | Again, technically this is in BCNF, but it is **NOT** desirable because we lose data about how `IJK` relates to `LM` and therefore can't accurately recover the original table |
-| IJK, LM, IJL | YES | `IJ` is superkey of `IJK`, `L` is superkey of `LM`, and we can perform a lossless join using `IJL` |
-
-Things to note about this last example:
-* We can kind of see a pattern begin to emerge for BCNF:
- * A simple decomposition could just be a relation for each FD and then an additional relation of all the keys if there is no common key between the two tables
- * So for this last example: `IJK` and `LM` are relations for each FD and `IJL` is just a table of the keys
-* We can also begin to see a rough outline of the algorithm for decomposing a relation to BCNF
- * Basically, if the relation isn't in BCNF, just keep breaking the relation up along the lines mentioned above until the relation is in BCNF
-
 ### (3). An informal BCNF Decomposition Algorithm
-#### Algorithm
 ```
 while BCNF is violated: 
    R with FDs FR
@@ -154,31 +122,6 @@ while BCNF is violated:
       turn R into R-Y & XY
 ```
 Intuitively, we can understand this as, "while BCNF is violated, find a relation that is violating a FD and decompose it further by splitting it into two tables: one with all the attributes defined in the FD and another with everything else and the key of the FD (ie. left side of FD = `X`).
-
-#### Example 5.4: Step By Step Example
-**Given the relation `BCNO` and the FDs `BC -> N` and `N -> BO`, decompose R using the following steps:**
- 1. `BCNO` violates BCNF
- 2. Break `BCNO` (in this example we use `N -> BO` as the "base" FD)
-  * `NBO` is one relation (obtained by just combining attributes of "base" FD)
-  * The other relation is simply `R - Y` = `BCNO` - `BO` = `CN`
- 3. Now we have `NBO`, `CN` which is in BCNF
-
-**NOTE:** that we have "lost" `BC -> N` since there is no longer a relation that contains all three attributes, but this is ok because we are in BCNF and apparently no one cares :/
-
-### (4). A formal BCNF Decomposition Algorithm
-#### Algorithm
-```
-    DecomposedRelations = { R }
-
-    while DecomposedRelations is not empty
-      R = pop a relation from DecomposedRelations
-      FR = subset of FDs in R's projection
-      for fd X->Y in FR
-        if fd violates BCNF with respect to R
-          NewRs = decompose R using fd 
-          add NewRs to DecomposedRelations
-          continue while loop
-```
 #### Example 5.5: Step By Step Example
 ```
     R:   ABCDE
