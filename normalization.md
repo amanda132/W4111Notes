@@ -1,55 +1,18 @@
-# I. General Idea: What and Why
-Quick review on steps for a new application
-
-* Requirements Analysis: What are you going to build? 
-* Conceptual Database Design: Pen-and-pencil description, ER diagram
-* Logical Database Design: Conversion into a relational database schema
-* Schema Refinement: Problem fixing, **Normalization** (to reduce redundancy by decompositions to normal form)
-* Physical Database Design: Optimize for speed/storage
 
 
-# II. Redundancy and Anomalies
+
+# I. Redundancy and Anomalies
 In general, redundancy is bad. We want to find a systematic way to solve this problem.
-#### Example 2.1: 
-* people have names and addresses 
-* hobbies have costs
-* many-to-many relationship between people and hobbies
-
-|   sid(key)    | name           |  address  |  hobby  |   cost   |
-| ------------- |:--------------:|:---------:|:-------:|---------:|
-|       1       |       Eugene   | amsterdam |  trucks |  $$      |
-|       1       |       Eugene   | amsterdam |  cheese |  $       |
-|       2       |       Bob      |   40th    |  paint  |  $$$     |
-|       2       |       Bob      |   40th    |  cheese |  $       |
-|       4       |      Shaq      |  florida  |swimming |  $       |
-
-Some information are stored repeated, e.g. (Eugene, amsterdam), (Bob, 40th), (cheese, $).
-These redundancies lead to anomalies (inconsistence):
-
-* Update Anomaly
-  * In Example: If we update Eugene's address, we need to change every record related to Eugene. The same for Bob.
-  * Definition: If one copy of such repeated data is updated, an inconsistency is created unless all copies are similarly updated.
-* Insertion Anomaly
-  * In Example: Suppose the primary key is (sid, hobby), it's not allowed to add a person without hobby.
-  * Definition: It may not be possible to store certain information, unless some other information is stored as well.
-* Deletion Anomaly: 
-  * In Example: If we delete a hobby e.g. swimming, Shaq's record will be deleted unless it's allowed to update all 'swimming' to 'NULL'.
-  * Definition: It may not be possible to delete certain information without losing some other information.
-
-* A Possible Approach:
-we can decompose a table into smaller table. Unfortunately, not all decompositions are good. For example, if we decompose the above table into person(sid, name, addr, cost) and personhobby(sid, hobbyname), then it is not clear which cost goes to which hobby, as the two tables only have one common field -- sid.
+* Update Anomaly: If one copy of such repeated data is updated, an inconsistency is created unless all copies are similarly updated.
+* Insertion Anomaly: It may not be possible to store certain information, unless some other information is stored as well.
+* Deletion Anomaly: It may not be possible to delete certain information without losing some other information.
 
 # III. Decomposition
-1. What is decomposition?
-2. What criteria of decomposition do we care?
-3. Potential Problems with Decompositions
-
 ### 1. What is decomposition?
 Fortunately, many problems arising from redundancy can be addressed by replacing a relation **R** with a collection of 'smaller' relations,
 s.t.
 * each contain subset of attributes in **R**,
 * and together include all attributes in **R**.
-For example, a relation with attributes (ABCD) can be replaced with (AB,BCD) or (AB, BC, CD).
 
 ### 2. What criteria of decomposition do we care?
 #### Desirable criteria of decomposition
@@ -64,9 +27,6 @@ For example, a relation with attributes (ABCD) can be replaced with (AB,BCD) or 
   * If always need all data together, joins may be slower
   * Less flexible because there is no redundancy 
 
-#### How can we systematically decompose relations according to the desirable criteria?
-See below: functional dependencies and normal forms
-
 ### 3. Potential Problems with Decompositions
 * **Lossy-join**: able to recover R from smaller relations
 * **Non-dependency-preserving**: constraints on R hold by only enforcing constraints on smaller schemas
@@ -76,9 +36,6 @@ See below: functional dependencies and normal forms
 
 ### 1. What is FD?
 **Definition** Let X, Y be sets of attributes. If for any tuples t1 and t2 that t1[X] = t2[X] implies t1[Y] = t2[Y], we then call X->Y a functional dependency.
-
-Intuitively, FD X->Y means that if two tuples agree on the values in attributes X, they mush also agree on the values in attributes Y. 
-
 
 #### Note that
 * A functional dependency is a integrity constraint. It is a statement about _all_ instances of relations.
@@ -130,49 +87,9 @@ Attributes used for keys: A
 
 Attributes not used for keys: B, C
 
-#### Example 4.5
-
-R(ABCD)
-
-F = {AB --> C, C --> B, C -->D}
-
-Let's set up our handy table:
-
-| **L**        | **M**           | **R**  |
-| ------------- |:-------------:| -----:|
-| A     | B C | D |
-
-Using our table, we see that A might be a key. To be sure, we will perform A+, which will yield...just A by reflexivity. Therefore, A on its own is not a key, and must add another attribute to it. **This is where the middle column comes into play.** Let's try another closure like AB+:
-
-AB --> AB (reflexivity)
-
-AB --> C (given)
-
-C --> D (given)
-
-Therefore, AB+: ABCD
-
-Aha! Since we have all of the attributes of R, we now know that AB is a key. Now let's use the other middle attribute C:
-
-AC --> AC (reflex)
-
-C --> B (given)
-
-C --> D (given)
-
-Therefore, AC+: ACBD
-
-Now we find that AC is also a key. Therefore, we conclude for this problem:
-
-Keys: AB, AC,
-
-Attributes used for keys: A, B, C
-
-Attributes not used for keys: D
-
 
 # V. Normal Forms
-![](https://github.com/amanda132/W4111Notes/blob/master/Screen%20Shot%202018-11-13%20at%2011.36.51%20PM.png?raw=true)
+<img src = "https://github.com/amanda132/W4111Notes/blob/master/Screen%20Shot%202018-11-13%20at%2011.36.51%20PM.png" width = "450">
 
 If a relation is in a certain normal form (BCNF, 3NF etc.), it is known that certain kinds of problems are avoided/minimized. This can be used to help us decide whether decomposing the relation will help.
 
@@ -203,8 +120,6 @@ In words:
  * So a trivial superkey would just be a tuple of every attribute and candidate keys are a subset of superkeys, since they are *minimal* superkeys
  * More importantly, we say an attribute is a superkey of a relation w.r.t. FDs iff every attribute in the relation is defined in the functional dependency (eg. given `ABC` and `A -> BC`, `A` is a superkey of `ABC` because `A` uniquely identifies `B` and `C` as stated in the FD `A -> BC`)
  * If you can not check a FD in a relation, it defaults to be true
-
-### (2). A Few Examples:
 
 #### Example 5.3
 **Given the relation `IJKLM` and the functional dependency `IJ -> K`**
@@ -301,23 +216,10 @@ Tradeoff is that a relation in 3NF form does retain some redundancies.
 Schema: SBDC
 SBD -> C,S -> C is not in 3NF;
 SBD -> C,S -> C, C->S is.
-In both cases, SC is stored redundantly.
-
-#### Example 5.7: a pizza example
-![](https://github.com/agango/Scribesnotes-image/blob/master/image.png)
-  
-The key for this table is (Pizza, Type)-unique pairing of attributes, each pizza has one of every type
-We have the functional dependencies Topping->Type, and Pizza, Type->Topping. This relation is not in BCNF form, but is in 3NF form because the FD Topping->Type is no longer violated, as Type is a part of the key. However, this table does have redundancies.
-
-I thought we were trying to get rid of redundancies?
-
-Yes, but we can improve our data design abilities by understanding redundancy 
+In both cases, SC is stored redundantly
 
 # VI. Formalization of Normal Forms
 ## 1. Closure of FDs
-Let's start with an example: 
-If we know that Name->BDay, and BDay->Age, then we know that Name->Age
-
 A functional dependency f' is implied by a set F if f' is true when F is true. 
 
 All the functional dependencies that can be implied from F is called the closure (F<sup>+</sup>)
@@ -357,27 +259,8 @@ We can generate some rules from Armstrong's axioms.
 
 **Pseudo-transitivity**: If A->B, and CB->D, then CA->D holds (We can prove this using augmentation. We can augment C to both sides of A->B to get CA->CB, and use transitivity to get CA->D). 
 
-#### Example 6.2
-
-Consider the following relation scheme R=(A, B, C, G, H, I), and the set of functional dependencies A->B, A->C, CG->H, CG->I, B->H.
-
-We want to make sure that our closure includes all non-trivial functional dependencies implied by the dependencies given above.
-
-Our closure, F+, is then the following:
-
--A->H, by transitivity
-
--CG->HI. To see why, consider augmenting I to both sides of CG->H. We then get CGI->HI. However, we have CG->I, so we can substitute CG for I, and because functional dependencies deal with sets of attributes, CGCG->HI becomes CG->HI.
-
--AG->I. We can augment G to both sides of AG->CG, because CG->I, we get AG->I. It is important to note that we could do this in one step using pseudo-transitivity (A->C, so we can substitute A for C in CG->I to get AG->I).
 
 ## 3. Minimum Cover of Functional Dependencies
-
-Closures can allow us to compare sets of FD's meaningfully. 
-
-For example, if F1={A->B, A->C, A->BC}, and F2={A->B, A->C), are they equivalent? Yes! We can get from F2 to F1 using Armstrong's axioms, so F1 is not minimal.
-
-If there's a closure (a maximally expanded set of functional dependencies), then there must be a minimal set as well. 
 
 ### Steps:
  1. Turn the FD's into _standard form_
@@ -406,16 +289,6 @@ Consider the set A->B, ABC->E, EF->G, ACF->EG
         * ACF->E implied by AC->E (a smaller set of attributes that determines E), ACF->G implied by AC->E EF->G (we can substitute AC for E to get ACF->G to reconstruct this dependency)
 
 
-#### Examples 6.4
-Consider the set ABC -> DE, A -> DB, B -> DC.
-
-1. First convert to standard form:
-    * **ABC ->D**, **ABC ->E**, **A ->D**, **A ->B**, **B->D**, **B->C**.
-2. Minimise left side
-    * **A ->D**, **A ->E**, A ->D, A ->B, B->D, B->C.
-3. Remove Redundant ones:
-    * A ->E, A ->B, B->D, B->C.
-
 ## 4. Principled Decomposition
 
 We eventually want to be able to decompose relation R into sub-relations R1, R2,..., Rn such that we can do a join on R1, R2, ..., Rn and get back the original relation R, while preserving the functional dependencies F of R. 
@@ -439,14 +312,12 @@ This means that if the intersection of R1 and R2 is a key for either R1 or R2, a
 **Note: here R1 intersect R2 is simply the intersection of the attributes in the relation. If R1=(A, B) and R2=(B, C), then R1 intersect R2 = B**
 
 #### Example 6.5
-
-![](https://github.com/agango/Scribesnotes-image/blob/master/example2.png)
+<img src = "https://github.com/agango/Scribesnotes-image/blob/master/example2.png" width = "400">
 
 Why is this an example of lossy decomposition? In this case, (R1 intersect R2) = AB intersect BC = B. In table R1, B does not determine anything (we have 2 values of A for the same value of B), and the same for table R2. As we can see, when we join the two relations, we get new rows that were not there before. We have not been able to completely recover the original relation by joining R1 and R2. 
 
 What's correct?
-
-![](https://github.com/agango/Scribesnotes-image/blob/master/example3.png)
+<img src = "https://github.com/agango/Scribesnotes-image/blob/master/example3.png" width = "400">
 
 Why is this correct?
 
