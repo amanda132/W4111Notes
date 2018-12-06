@@ -52,37 +52,6 @@ s.t.
 For example, a relation with attributes (ABCD) can be replaced with (AB,BCD) or (AB, BC, CD).
 
 ### 2. What criteria of decomposition do we care?
-#### Example 3.1: A bad attempt
-
-|   sid(key)    | name           |  address  |   cost   |
-| ------------- |:--------------:|:---------:|---------:|
-|       1       |       Eugene   | amsterdam |  $$      |
-|       1       |       Eugene   | amsterdam |  $       |
-|       2       |       Bob      |   40th    |  $$$     |
-|       2       |       Bob      |   40th    |  $       |
-|       4       |      Shaq      |  florida  |  $       |
-
-|   sid(key)    |  hobby  |
-| ------------- |:-------:|
-|       1       |  trucks |
-|       1       |  cheese |
-|       2       |  paint  |
-|       2       |  cheese |
-|       4       |swimming |
-
-This is a bad attempt because you lose information in the decomposition, making it a lossy decomposition. Additionally it uses the same amount of memory to store the data so there is no benefit to decomposing the table in this way. 
-
-Explanation: If we read 'person' relation only, we cannot understand the meaning of attribute 'cost' without join, since it's the hobby's cost. However, if we equi-join two relations on sid, it actually cannot recover the original relation. 
-Because we have two tuples with 'sid = 1', equi-join is ambiguous that for instance cost '$$' can be associated with 'cheese' or 'trucks'. The decomposition breaks the original association between hobby and cost, and thus loses information. We call such decomposition as a 'lossy decomposition'.
-
-#### Example 3.2: A familiar attempt
-
-![](https://github.com/amanda132/W4111Notes/blob/master/Screen%20Shot%202018-11-13%20at%203.40.00%20PM.png?raw=true)
-
-It works out, thanks to heuristic ER diagram.
-
-Explanation: In ER model, attributes only describe the entity they belongs to, and every entity table has a primary key that determines all values of a tuple. In this sense, both person and hobby are independent entities with meaningful attributes. The relationship table describes the association between person and hobby, and if we join it with person and hobby, we will recover the original table without any loss of information.
-
 #### Desirable criteria of decomposition
 * Lossless-join: enable us to recover original relation from the smaller relations. **π<sub>X</sub>(R)⋈π<sub>Y</sub>(R) = R**
 * Dependency-preservation: enable us to enforce any constraint on the original relation by simply enforcing some constraints on each of the smaller relations, i.e. to enforce constraints even without joins.
@@ -104,62 +73,13 @@ See below: functional dependencies and normal forms
 * **Performance**: additional joins, may affect performance
 
 # IV. Functional Dependency
-1. What is FD?
-2. How do we use FD?
-3. Where to find FD?
 
 ### 1. What is FD?
 **Definition** Let X, Y be sets of attributes. If for any tuples t1 and t2 that t1[X] = t2[X] implies t1[Y] = t2[Y], we then call X->Y a functional dependency.
 
 Intuitively, FD X->Y means that if two tuples agree on the values in attributes X, they mush also agree on the values in attributes Y. 
 
-#### Example 4.1: FDs
 
-
-|   sid(key)    | name           |  address  |  hobby  |   cost   |
-| ------------- |:--------------:|:---------:|:-------:|---------:|
-|       1       |       Eugene   | amsterdam |  trucks |  $$      |
-|       1       |       Eugene   | amsterdam |  cheese |  $       |
-|       2       |       Bob      |   40th    |  paint  |  $$$     |
-|       2       |       Bob      |   40th    |  cheese |  $       |
-|       4       |      Shaq      |  florida  |swimming |  $       |
-
-* sid -> name, address 
-* hobby -> cost
-* sid, hobby -> name, address, cost
-
-For `sid -> name, address`, sid sufficient to identify name and address, but not hobby.
-In other words, if 2 records have the same sid, their name and address are the same.
-
-#### Example 4.2: 
-| a | b | c | d |
-| - |:-:|:-:| -:|
-| 1 | 1 | 1 | 1 |
-| 2 | 2 | 2 | 1 |
-| 2 | 3 | 4 | 1 |
-| 3 | 4 | 5 | 1 |
-| 4 | 5 | 6 | 1 |
-
-This table is not consistent with the following FDs:
-
-a -> bc, c -> d.
-
-#### Example 4.3: primary key and redundancy
-| a | b | c | d | e |
-| - |:-:|:-:|:-:| -:|
-| 1 | 2 | 2 | cat | 1 |
-| 1 | 2 | 2 | dog | 2 |
-| 2 | 3 | 3 | dog | 2 |
-
-Suppose the FDs are:
-
-a -> bc, d->e.
-
-Here, neither ``a'' nor ``d'' can be a primary key. Then we can add data to make the above table clearly redundant. For example, if we add one row 
-
-3 | 4 | 4 | dog | 2,
-
-then dog and 2 shows redundancy.
 #### Note that
 * A functional dependency is a integrity constraint. It is a statement about _all_ instances of relations.
 * Redundancy depends on FDs (SUPER IMPORTAANT): 
@@ -250,31 +170,6 @@ Attributes used for keys: A, B, C
 
 Attributes not used for keys: D
 
-#### Example 4.6
-
-R(ABC)
-
-F = {A --> B, B --> C, C --> A}
-
-| **L**        | **M**           | **R**  |
-| ------------- |:-------------:| -----:|
-|      | A B C |  |
-
-This situation is rather painful, but it is doable. Since all of the attributes are in the middle column, we must do multiple permutations of closure to find the keys (ie: closures of 1 attribute at a time,  2 attributes at a time, and 3 attributes at a time).
-
-A+: ABC (A is a key)
-
-B+: ABC (B is a key)
-
-C+: ABC (C is a key)
-
-In this case, all of the attributes by themselves are all keys, so we are done.
-
-Keys: A, B, C
-
-Attributes used for keys: A, B, C
-
-Attributes not used for keys: null
 
 # V. Normal Forms
 ![](https://github.com/amanda132/W4111Notes/blob/master/Screen%20Shot%202018-11-13%20at%2011.36.51%20PM.png?raw=true)
@@ -310,28 +205,6 @@ In words:
  * If you can not check a FD in a relation, it defaults to be true
 
 ### (2). A Few Examples:
-#### Example 5.1
-** Given the relation `ABCD` and the FDs `A -> B`, `A -> C`**
-
-| Relations | BCNF? | Reason |
-| ------ | ------ | ------ |
-| ABCD | NO | `A -> B` is not trivially satisfied (ie. `B` in not in `A`) and `A` is not a superkey of `ABCD` |
-| AB, AC, AD | YES | `A` is superkey of `AB` and `AC` (again don't really care about `AD`) |
-| AB, AC, D | YES* | **BUT** this is **NOT** desirable because we've lost data about how `D` relates to the rest `A`, `B`, and `C` |
-| ABC, D | YES* | `A -> B` and `A -> C` implies `A -> BC`, which is satisfied by this relation; but like the relation above, this is **NOT** desirable because we've lost data about `D` |
-
-So why is `AB, AC, AD` considered a "good" decomposition while `AB, AC, D` is "bad"?
-* Because we know `A` is a key of `AB` and `AC`, we can accurately recover the original schema `ABCD` by performing a join on `A`
-* Conversely, we cannot do this on `AB, AC, D` because after joining `AB` and `AC` on `A` we have no lossless way of combining `ABC` and `D` (ie. we can only perform a cross-product, which will most likely produce too many tuples)
-
-#### Example 5.2
-**Given the relation `SHNAC` and the function dependencies `S -> NA` and `H -> C`**
-
-| Relations | BCNF? | Reason |
-| ------ | ------ | ------ |
-| SHNAC | NO | for `S -> NA`, `NA` is not in `S` and `S` is not a superkey of `SHNAC` => NOT BCNF |
-| SNA, SHC | NO | for `S -> NA`, `S` is a superkey of `SNA`... ignore `SHC` because does not contain `NA`... for `H -> C`, ignore `SNA`... `H` not superkey of `SHC` => NOT BCNF (ie. `H -> C` FD is not satisfied) |
-| SNA, HC, SH | YES | for `S -> NA`, `S` is a superkey of `SNA`... ignore `HC` and `SH`... for `H -> C`, ignore `SNA`... `H` is a superkey of `HC`... ignore `SH` => YES BCNF (ie. all FDs satisfied!) |
 
 #### Example 5.3
 **Given the relation `IJKLM` and the functional dependency `IJ -> K`**
@@ -656,30 +529,7 @@ For X->Y in Fmin not in projection onto R1,.., Rn
  7. Since `CN` is a subset of `BCN`, remove redundant table `CN`
  8. Final results: `NBO`, `BCN`
 
-#### Example 6.9
 
-Relation `ABCDE`, FDs `A->BCDE`, `B->C`, `D->EC`.
-
-```
-1. Applying `B->C`, `BC`, `ABDE`
-2. Applying `D->E` (projection of `D->EC` on `ABDE`), `BC`, `DE`, `ABD`
-3. Fmin = { A->B, A->D, B->C, D->E, D->C }
-4. `D->C` is missing
-5. 3NF: `BC`, `DE`, `ABD`, `DC`
-```
-
-#### Example 6.10
-Relation `ABCDE`, key `A`, `BC ->A`, `D->B`, `C->D`
-1. Get Fmin:
-* A->B, A->C, A ->D, A ->E, BC ->A, D->B, C->D
-* A->B, A->C, A ->D, A ->E, C ->A, D->B, C->D (since C->D and D->B)
-* A->B, A->C, A ->D, A ->E, C ->A, D->B (since C->A and A->D)
-2. BCNF:
-* DB,ACDE using D->B
-* DB,AC,ADE using A->C
-* DB, CD, AE, AD using A->E
-3. Recover dependency:
-* DB,AC,AE,AD,AB to recover lost dependency A->B.
 
 ## (4). Practice problem and strategy to find minimal cover
 Find minimal cover for R(ABCDE) F={A->D, BC->AD, C->B, E->A, E->D}
@@ -720,7 +570,4 @@ strategy: do it one FD at a time, pretend if it does not exist and see if we can
 ```
 
 
-## Code to solve FD problems 
 
-**NOTE THIS IS STARTER CODE AND INCORRECT!!!**: 
-https://www.instabase.com/hooshmand68/comsw4111Normalization/fs/Instabase%20Drive/main.ipynb
